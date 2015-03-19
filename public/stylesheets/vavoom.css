@@ -3,7 +3,7 @@ body {
 }
 
 .jumbotron-big {
-    background: url("IMG_8829.JPG");
+    background: url("/images/IMG_8829.JPG");
     background-position: center;
     background-repeat: no-repeat;
     display:compact;
@@ -12,7 +12,7 @@ body {
 }
 
 .jumbotron-xs {
-    background: url("vavoomlogo.png");
+    background: url("/images/vavoomlogo.png");
     height:540px;
     color:white;
 }
