@@ -56,6 +56,6 @@ app.get('/gallery', function(req, res){
 	res.render('gallery',{givenTitle:"Vavoom Gallery", givenScript:"/javascripts/gallery.js"});
 });
 
-app.listen(8000, function(){
+app.listen(80, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
