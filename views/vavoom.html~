@@ -195,7 +195,7 @@
   <div class="row" id="mailform">
     <form action="/connect" method="post">
       <fieldset>
-        <input type="text" size="36" placeholder="Join Our Mailing List!">
+        <input type="text" size="36" name="email" placeholder="Join Our Mailing List!">
       </br>
     </br>
         <button type="submit" class="btn">Submit</button>
