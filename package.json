@@ -5,6 +5,7 @@
   , "dependencies": {
       "express": "2.5.8"
     , "jade": ">= 0.0.1"
+    , "sendgrid": "1.6.0"
     , "mongoose": "2.6.5"
   }
 }

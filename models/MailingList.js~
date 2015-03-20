@@ -1,13 +1,11 @@
 var db = require('../db');
 var MailingListSchema = new db.Schema({
-	email : {type: String, unique : true}
+	email : {type: String, unique : true} //UNIQUE : TRUE IS THE REASON ITS CRASHING UPON DUPES!
 })
 
 var MyUser = db.mongoose.model('MailingList', MailingListSchema);
 
-module.exports.addUser = addUser;
-
-function addUser(email, callback){
+exports.addUser = function(email, callback){
 	var instance = new MyUser();
 	instance.email = email;
 	instance.save(function (err) {
