@@ -76,6 +76,22 @@ app.post('/connect', function(req, res){
 	});
 });*/
 
+app.get('/gamblinghome', function(req,res){
+	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
+});
+
+app.get('/gamblinggroup', function(req,res){
+	res.render('gamblinggroup',{givenTitle:"Gambling4em Group",givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
+});
+
+app.post('/creategroup', function(req, res){
+	var groupName = req.body.groupname;
+	Group.addGroup(groupName, function(err, group){
+		if (err) throw (err);
+		res.redirect("'/'"+groupName+"''");
+	});
+});
+
 app.get('/gallery', function(req, res){
 	res.render('gallery',{givenTitle:"Vavoom Gallery", givenScript:"/javascripts/gallery.js"});
 });

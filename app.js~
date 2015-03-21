@@ -5,8 +5,8 @@
 var express = require('express')
   , routes = require('./routes')
   , fs = require('fs')
-  , mongoose = require('mongoose')
-  , db = mongoose.connect('mongodb://localhost/mailinglist')
+//  , mongoose = require('mongoose')
+//  , db = mongoose.connect('mongodb://localhost/mailinglist')
   , MailingList = require('./models/MailingList.js')
   , sendgrid = require('sendgrid')('cd17822', 'Chuck17822');
 
@@ -49,10 +49,10 @@ app.get('/', function(req,res){
 app.post('/connect', function(req, res){
 	var email = req.body.email; 
 	var eObject = new sendgrid.Email();
-	/*MailingList.addUser(email, function(err, user) {
+	MailingList.addUser(email, function(err, user) {
 		if (err) throw err;
 		res.redirect('/');
-	});*/
+	});
 	eObject.addTo(email);
 	eObject.setFrom('cdigiov1@binghamton.edu');
 	eObject.setSubject('Vavoom');
@@ -61,9 +61,9 @@ app.post('/connect', function(req, res){
 	res.redirect('/');
 });
 
-app.get('/mass', function(req, res){
-	db.findUser('mailinglists','{email: {$exists:true}}', 100, console.log('hello'));
-});
+//app.get('/mass', function(req, res){
+//	db.findUser('mailinglists','{email: {$exists:true}}', 100, console.log('hello'));
+//});
 		/*
 		function(err,docs){
 		for (var i=0; i< docs.length; i++){
@@ -75,6 +75,22 @@ app.get('/mass', function(req, res){
 		}
 	});
 });*/
+
+app.get('/gamblinghome', function(req,res){
+	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
+});
+
+app.get('/gamblinggroup', function(req,res){
+	res.render('gamblinggroup',{givenTitle:"Gambling4em Group",givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
+});
+
+app.post('/creategroup', function(req, res){
+	var groupName = req.body.groupname;
+	Group.addGroup(groupName, function(err, group){
+		if (err) throw (err);
+		res.redirect("'/'+"groupName+"''");
+	});
+});
 
 app.get('/gallery', function(req, res){
 	res.render('gallery',{givenTitle:"Vavoom Gallery", givenScript:"/javascripts/gallery.js"});
