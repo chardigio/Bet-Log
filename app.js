@@ -22,6 +22,10 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  app.use(bodyParser.urlencoded({
+	  extended: true
+  }));
+  app.use(bodyParser.json());
 });
 
 app.configure('development', function(){
@@ -31,11 +35,6 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-	  extended: true
-}));
 
 // Routes
 
@@ -87,7 +86,7 @@ app.get('/gallery', function(req,res){
 });*/
 
 app.get('/', function(req,res){
-	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
+	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblingome.css",givenScript:"/javascripts/gamblinghome.js"});
 });
 
 app.post('/creategroup', function(req, res){
@@ -98,6 +97,19 @@ app.post('/creategroup', function(req, res){
 	});
 });
 
+app.post('/newbetop1',function(req,res){
+	var groupName= req.body.groupName,
+	        eventName= req.body.eventName,
+		better=req.body.better,
+		email=req.body.email,
+		address=req.body.address;
+
+	Group.addBet(groupName, eventName, better, amount, email, function(err, group){
+		if (err) throw (err);
+	});
+});
+			
+
 app.post('/eventpage',function(req,res){
 	var groupName = req.body.groupName,
 		eventName= req.body.eventName,
@@ -107,7 +119,7 @@ app.post('/eventpage',function(req,res){
 
 	Group.addEvent(groupName, eventName, eventCreator, [opt1, opt2], function(err,group){
 		if (err) throw (err);
-		res.render('gamblingevent',{givenTitle:eventName, givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
+		res.render('gamblingevent',{givenTitle:eventName, groupName:groupName, eventName:eventName, eventCreator:eventCreator, opt1:opt1, opt2:opt2, givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
 	});
 });
 

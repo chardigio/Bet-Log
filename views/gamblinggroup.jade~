@@ -2,6 +2,8 @@ form(action="/eventpage",method="post")
 	input(type="hidden", name='groupName', value=givenTitle)
 	p Event Name:
 	input(type="text", name="eventName")
+	p Event Creator:
+	input(type="text", name="eventCreator")
 	p Option 1:
 	input(type="text", name="option1")
 	p Option 2:

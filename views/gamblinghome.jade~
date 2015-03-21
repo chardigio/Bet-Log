@@ -1,27 +1,21 @@
-doctype
-html
-	head
-		title=givenTitle
-		meta(name='viewport',content='width=device-width, initial-scale=1')
-		link(rel='stylesheet', href='#{givenSheet}')
-		script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')
-		script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
-		//script(src='#{givenScript}')form(action="/creategroup",method="post")
-	body
-		p Group Name:
-		input(type="text", name="groupname")
+p Group Name:
+input(type="text", name="groupname")
 
-		.container -fluid
-			.jumbotron
-				h1 Gamble4em
-				p Place your bets using our site!
+.container-fluid
+	.jumbotron
+		h1 Gamble4em
+		p Place your bets using our site!
 
-			.row
-				.col -xs -4
-				.col -xs -4 #create Create Event
-				.col -xs -4
-			.row
-				.col -xs -4
-				.col -xs -4 #join Join Event
-				.col -xs -4
+	.row
+		.col-xs-4
+		.col-xs-4
+			h2 Create Event
+			button#create
+		.col-xs-4
+	.row
+		.col-xs-4
+		.col-xs-4
+			h2 Join Event
+			button#join
+		.col-xs-4
 

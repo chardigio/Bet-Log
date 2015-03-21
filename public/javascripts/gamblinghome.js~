@@ -1,0 +1,6 @@
+$(document).ready(function(){
+        $("#createcol").click(function(){
+		var html = "";
+		$(this).append(html);
+	});
+});
