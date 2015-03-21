@@ -1,21 +1,26 @@
 p Group Name:
-input(type="text", name="groupname")
+form(action='/creategroup', method='post')
+	input(type="text", name="groupname")
 
 .container-fluid
 	.jumbotron
-		h1 Gamble4em
-		p Place your bets using our site!
-
-	.row
-		.col-xs-4
-		.col-xs-4
-			h2 Create Event
-			button#create
-		.col-xs-4
-	.row
-		.col-xs-4
-		.col-xs-4
-			h2 Join Event
-			button#join
-		.col-xs-4
+		h1#title=givenTitle
+		p#subtitle Place your bets using our site!
+		br
+		br
+		br
+		br
+		br
+		br
+		.row
+			.col-xs-4
+			.col-xs-4#createcol
+				button.btn.btn-primary.btn-lg.btn-block(type="button") Create Group
+			.col-xs-4
+		br
+		.row
+			.col-xs-4
+			.col-xs-4
+				button.btn.btn-primary.btn-lg.btn-block(type="button") Join Group
+			.col-xs-4
 
