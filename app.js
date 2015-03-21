@@ -8,6 +8,7 @@ var express = require('express')
 //  , mongoose = require('mongoose')
 //  , db = mongoose.connect('mongodb://localhost/mailinglist')
   , Group = require('./models/Group.js')
+  , bodyParser = require('body-parser')
   , sendgrid = require('sendgrid')('cd17822', 'Chuck17822');
 
 var app = module.exports = express.createServer();
@@ -30,6 +31,11 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	  extended: true
+}));
 
 // Routes
 
@@ -61,6 +67,10 @@ app.post('/connect', function(req, res){
 	res.redirect('/');
 });
 
+app.get('/gallery', function(req,res){
+	res.render('gallery');
+});
+
 //app.get('/mass', function(req, res){
 //	db.findUser('mailinglists','{email: {$exists:true}}', 100, console.log('hello'));
 //});
@@ -77,7 +87,7 @@ app.post('/connect', function(req, res){
 });*/
 
 app.get('/', function(req,res){
-	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
+	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/vavoom.css",givenScript:"/javascripts/gamblinghome.js"});
 });
 
 app.post('/creategroup', function(req, res){

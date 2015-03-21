@@ -47,7 +47,7 @@ exports.addEvent = function(givenGroupName, eventName, eventCreator, options, ca
 	MyGroup.find({'groupName' : givenGroupName}, function(err, group){
 		if (err) return handleError(err);
 		if (group){
-			console.log(group);
+			console.log(group.groupName);
 			MyGroup.update({groupName: givenGroupName}, {
 				events: [{
 						eventName: eventName,

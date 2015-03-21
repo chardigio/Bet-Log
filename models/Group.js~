@@ -1,4 +1,8 @@
 var db = require('../db');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	  extended: true
+}));
 var GroupSchema = new db.Schema({
 	groupName : String,
     	events : [ 
@@ -47,18 +51,17 @@ exports.addEvent = function(givenGroupName, eventName, eventCreator, options, ca
 	MyGroup.find({'groupName' : givenGroupName}, function(err, group){
 		if (err) return handleError(err);
 		if (group){
-			console.log(group);
-			/*MyGroup.update({groupName: givenGroupName}, {
+			console.log(group.groupName);
+			MyGroup.update({groupName: givenGroupName}, {
 				events: [{
 						eventName: eventName,
 				eventCreator: eventCreator,
-				options : [{team: options[0]}],
-				options[1] : [{team: options[1]}],
+				options : [{team: options[0]},{team: options[1]}],
 				completed: false
 					}]
 			},function(err,group){
 				if (err) console.err;
-			});*/
+			});
 		}
 	})
 }
