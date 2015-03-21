@@ -3,7 +3,7 @@ var GroupSchema = new db.Schema({
 	groupName : String,
     	events : [ 
 		    {
-			eventName:String,
+			eventName: String,
     			eventCreator: String,
     			options:[
 				   {
@@ -12,23 +12,28 @@ var GroupSchema = new db.Schema({
 						     {
 							  betterName: String,
     							  betterAddress: String,
-    							  betterAmount: float
+    							  betterAmount: String
 						     }
-						 ]
-  					winner: boolean
+						 ],
+  					winner: Boolean
 				    }
 				],
-    			completed:boolean
+    			completed: Boolean,
+    			messages: [
+				      {
+					   messageFrom: String,
+					   messageText: String
+			 	      }
+				  ]
 		    }
 		 ]
-	}
 });
 
-var MyUser = db.mongoose.model('MailingList', MailingListSchema);
+var MyGroup = db.mongoose.model('Group', GroupSchema);
 
-exports.addUser = function(email, callback){
-	var instance = new MyUser();
-	instance.email = email;
+exports.addGroup = function(groupName, callback){
+	var instance = new MyGroup();
+	instance.groupName = groupName;
 	instance.save(function (err) {
 		if (err) {
 			callback(err);
@@ -36,4 +41,24 @@ exports.addUser = function(email, callback){
 			callback(null, instance);
 		}
 	});
+}
+
+exports.addEvent = function(givenGroupName, eventName, eventCreator, options, callback){
+	MyGroup.find({'groupName' : givenGroupName}, function(err, group){
+		if (err) return handleError(err);
+		if (group){
+			console.log(group);
+			/*MyGroup.update({groupName: givenGroupName}, {
+				events: [{
+						eventName: eventName,
+				eventCreator: eventCreator,
+				options : [{team: options[0]}],
+				options[1] : [{team: options[1]}],
+				completed: false
+					}]
+			},function(err,group){
+				if (err) console.err;
+			});*/
+		}
+	})
 }

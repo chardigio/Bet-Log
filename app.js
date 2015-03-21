@@ -7,7 +7,7 @@ var express = require('express')
   , fs = require('fs')
 //  , mongoose = require('mongoose')
 //  , db = mongoose.connect('mongodb://localhost/mailinglist')
-  , MailingList = require('./models/MailingList.js')
+  , Group = require('./models/Group.js')
   , sendgrid = require('sendgrid')('cd17822', 'Chuck17822');
 
 var app = module.exports = express.createServer();
@@ -33,7 +33,7 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', function(req,res){
+app.get('/vavoom', function(req,res){
         fs.readFile('./views/vavoom.html', function(error, content) {
                 if (error) {
                         res.writeHead(500);
@@ -56,7 +56,7 @@ app.post('/connect', function(req, res){
 	eObject.addTo(email);
 	eObject.setFrom('cdigiov1@binghamton.edu');
 	eObject.setSubject('Vavoom');
-	eObject.setHtml('Thakns for Joining the Mailing List!');
+	eObject.setHtml('Thanks for Joining the Mailing List!');
 	sendgrid.send(eObject);
 	res.redirect('/');
 });
@@ -76,24 +76,29 @@ app.post('/connect', function(req, res){
 	});
 });*/
 
-app.get('/gamblinghome', function(req,res){
+app.get('/', function(req,res){
 	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
 });
 
-app.get('/gamblinggroup', function(req,res){
-	res.render('gamblinggroup',{givenTitle:"Gambling4em Group",givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
-});
-
 app.post('/creategroup', function(req, res){
-	var groupName = req.body.groupname;
+	var groupName = req.body.groupName;
 	Group.addGroup(groupName, function(err, group){
 		if (err) throw (err);
-		res.redirect("'/'"+groupName+"''");
+		res.render('gamblinggroup',{givenTitle:groupName, givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
 	});
 });
 
-app.get('/gallery', function(req, res){
-	res.render('gallery',{givenTitle:"Vavoom Gallery", givenScript:"/javascripts/gallery.js"});
+app.post('/eventpage',function(req,res){
+	var groupName = req.body.groupName,
+		eventName= req.body.eventName,
+		eventCreator = req.body.eventCreator,
+		opt1= req.body.option1,
+		opt2= req.body.option2;
+
+	Group.addEvent(groupName, eventName, eventCreator, [opt1, opt2], function(err,group){
+		if (err) throw (err);
+		res.render('gamblingevent',{givenTitle:eventName, givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
+	});
 });
 
 app.listen(8000, function(){
