@@ -86,7 +86,7 @@ app.get('/gallery', function(req,res){
 });*/
 
 app.get('/', function(req,res){
-	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblingome.css",givenScript:"/javascripts/gamblinghome.js"});
+	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
 });
 
 app.post('/creategroup', function(req, res){
