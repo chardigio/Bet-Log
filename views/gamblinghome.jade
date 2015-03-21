@@ -1,7 +1,20 @@
-.containter-fluid
-	.row
-		.col-xs-3
-		.col-xs-3
-			form(action="/creategroup",method="post")
-				p Group Name:
-				input(type="text", name="groupName")
+extends ./layout.jade
+
+form(action="/creategroup",method="post")
+        p Group Name:
+        input(type="text", name="groupname")
+
+.container -fluid
+        .jumbotron
+                h1 Gamble4em
+                p Place your bets using our site!
+
+        .row
+                .col -xs -4
+                .col -xs -4 #create Create Event
+                .col -xs -4
+        .row
+                .col -xs -4
+                .col -xs -4 #join Join Event
+                .col -xs -4
+
