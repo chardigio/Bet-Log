@@ -3,21 +3,21 @@ var GroupSchema = new db.Schema({
 	groupName : String,
     	events : [ 
 		    {
-			eventName: String,
-    			eventCreator: String,
+				eventName: String,
     			options:[
 				   {
 					team: String,
     					betters: [
 						     {
-							  betterName: String,
-    							  betterAddress: String,
-    							  betterAmount: String
+							  	betterName: String,
+    							betterAddress: String,
+    							betterAmount: String
 						     }
 						 ],
   					winner: Boolean
 				    }
 				],
+				eventCreator: String,
     			completed: Boolean,
     			messages: [
 				      {
@@ -44,17 +44,17 @@ exports.addGroup = function(groupName, callback){
 }
 
 exports.addEvent = function(givenGroupName, eventName, eventCreator, options, callback){
-	MyGroup.find({'groupName' : givenGroupName}, function(err, group){
+	MyGroup.find({'groupName':givenGroupName}, function(err, group){
 		if (err) return handleError(err);
 		if (group){
-			MyGroup.update({groupName: givenGroupName}, {
-				events: [{
+			MyGroup.update({groupName: givenGroupName}, {$push: {
+				events: {
 						eventName: eventName,
-				eventCreator: eventCreator,
-				options : [{team: options[0]},{team: options[1]}],
-				completed: false
-					}]
-			},function(err,group){
+						//'options.team' : {$each: [options[0],options[1]]},
+						eventCreator: eventCreator,
+						completed: false
+					} }
+			}, function(err,group){
 				if (err) {
 					console.err;
 				}else{
@@ -65,18 +65,19 @@ exports.addEvent = function(givenGroupName, eventName, eventCreator, options, ca
 	})
 }
 
-exports.addBet = function(groupName, eventName, better, amount, email, callback){
-	MyGroup.find({'groupName' : givenGroupName}, function(err, group){
+exports.addBet = function(groupName, eventName, better, amount, email, team, callback){
+	MyGroup.find({'groupName' : groupName}, function(err, group){
 		if (err) return handleError(err);
 		if (group){
-			console.log(typeof JSON.stringify(group));
+			/*var groupString = JSON.stringify(group);
+			console.log(groupString);
+			console.log(group);
+			if (group.indexOf(eventName)) {
+					var insertedString = group.slice(team);
+			}
+			var insertedString = group.slice(0,group.indexOf(eventName)+18);*/
 		}
 	});
 }
-
-
-
-
-
 
 

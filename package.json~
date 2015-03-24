@@ -8,5 +8,6 @@
     , "sendgrid": "1.6.0"
     , "mongoose": "2.6.5"
     , "body-parser": ">=0.0.1"
+    , "mongodb-uri": ">=0.0.1"
   }
 }

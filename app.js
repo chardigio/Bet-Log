@@ -8,7 +8,6 @@ var express = require('express')
 //  , mongoose = require('mongoose')
 //  , db = mongoose.connect('mongodb://localhost/mailinglist')
   , Group = require('./models/Group.js')
-  , bodyParser = require('body-parser')
   , sendgrid = require('sendgrid')('cd17822', 'Chuck17822');
 
 var app = module.exports = express.createServer();
@@ -22,10 +21,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-  app.use(bodyParser.urlencoded({
-	  extended: true
-  }));
-  app.use(bodyParser.json());
 });
 
 app.configure('development', function(){
@@ -66,60 +61,45 @@ app.post('/connect', function(req, res){
 	res.redirect('/');
 });
 
-app.get('/gallery', function(req,res){
-	res.render('gallery');
-});
-
-//app.get('/mass', function(req, res){
-//	db.findUser('mailinglists','{email: {$exists:true}}', 100, console.log('hello'));
-//});
-		/*
-		function(err,docs){
-		for (var i=0; i< docs.length; i++){
-			eObject.addTo(docs[i].email);
-			eObject.setFrom('cdigiov1@binghamton.edu');
-			eObject.setSubject('First Test');
-			eObject.setHtml('awefjio;');
-			sendgrid.send(eObject);
-		}
-	});
-});*/
-
 app.get('/', function(req,res){
-	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",givenScript:"/javascripts/gamblinghome.js"});
+	res.render('gamblinghome',{givenTitle:"Gambling4em",givenStyle:"/stylesheets/gamblinghome.css",
+		givenScript:"/javascripts/gamblinghome.js"});
 });
 
 app.post('/creategroup', function(req, res){
 	var groupName = req.body.groupName;
 	Group.addGroup(groupName, function(err, group){
 		if (err) throw (err);
-		res.render('gamblinggroup',{givenTitle:groupName, givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
-	});
-});
-
-app.post('/newbetop1',function(req,res){
-	var groupName= req.body.groupName,
-	        eventName= req.body.eventName,
-		better=req.body.better,
-		email=req.body.email,
-		address=req.body.address;
-
-	Group.addBet(groupName, eventName, better, amount, email, function(err, group){
-		if (err) throw (err);
+		res.render('gamblinggroup',{givenTitle:groupName, givenStyle:"/stylesheets/gamblinggroup.css",
+			givenScript:"/javascripts/gamblinggroup.js"});
 	});
 });
 			
 
-app.post('/eventpage',function(req,res){
+app.post('/createevent',function(req,res){
 	var groupName = req.body.groupName,
 		eventName= req.body.eventName,
 		eventCreator = req.body.eventCreator,
-		opt1= req.body.option1,
-		opt2= req.body.option2;
-
+		opt1 = req.body.option1,
+		opt2 = req.body.option2;
 	Group.addEvent(groupName, eventName, eventCreator, [opt1, opt2], function(err,group){
 		if (err) throw (err);
-		res.render('gamblingevent',{givenTitle:eventName, groupName:groupName, eventName:eventName, eventCreator:eventCreator, opt1:opt1, opt2:opt2, givenStyle:"/stylesheets/gamblinggroup.css",givenScript:"/javascripts/gamblinggroup.js"});
+		res.render('gamblingevent',{givenTitle:eventName, groupName:groupName, eventName:eventName, 
+			eventCreator:eventCreator, opt1:opt1, opt2:opt2, givenStyle:"/stylesheets/gamblinggroup.css",
+			givenScript:"/javascripts/gamblinggroup.js"});
+	});
+});
+
+app.post('/createbet',function(req,res){
+	var groupName= req.body.groupName,
+	    eventName= req.body.eventName,
+	    team= req.body.team,
+	    amount = req.body.amount,
+		better=req.body.better,
+		address=req.body.address;
+
+	Group.addBet(groupName, eventName, better, amount, address, team, function(err, group){
+		if (err) throw (err);
 	});
 });
 
