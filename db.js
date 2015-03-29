@@ -3,9 +3,6 @@ var mongoose = require('mongoose'),
 var Schema = mongoose.Schema;
 module.exports.mongoose = mongoose;
 module.exports.Schema = Schema;
-var mongodbUri = 'mongodb://localhost/GamblingGroups';
+var mongodbUri = 'mongodb://localhost/GamblingCollections';
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 mongoose.connect(mongooseUri)
-//exports.findUser = function(name, query, limit, callback){
-//	db.collection(name).find(query).sort({_id: -1}).limit(limit).toArray(callback);
-//}

@@ -1,0 +1,37 @@
+extends layout
+
+block content
+	.container-fluid
+		.jumbotron
+			h1#title Gambling4em
+			h2#subtitle=groupName
+			br
+			br
+			.row
+				.col-xs-4
+				.col-xs-4.boxme(align='center')
+					form(action="/createevent",method="post")
+						fieldset
+							br
+							input(type="hidden", name='groupName', value=groupName)
+							p Event Name:
+							input(type="text", name="eventName", placeholder="Event Name")
+							br
+							br
+							p Event Creator:
+							input(type="text", name="eventCreator", placeholder="Event Creator")
+							br
+							br
+							p Option 1:
+							input(type="text", name="option1", placeholder="Option 1")
+							br
+							br
+							p Option 2:
+							input(type="text", name="option2", placeholder="Option 2")
+							br
+							br
+							br
+							button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Event
+			br
+			br
+			br

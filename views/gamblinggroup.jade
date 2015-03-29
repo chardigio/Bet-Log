@@ -1,12 +1,16 @@
-form(action="/createevent",method="post")
-	input(type="hidden", name='groupName', value=givenTitle)
-	p Event Name:
-	input(type="text", name="eventName")
-	p Event Creator:
-	input(type="text", name="eventCreator")
-	p Option 1:
-	input(type="text", name="option1")
-	p Option 2:
-	input(type="text", name="option2")
-	br
-	input(type="submit")
+extends layout
+
+block content
+	.container-fluid
+		.jumbotron
+			h1#title Gambling4em
+			h2#subtitle=givenTitle
+			br
+			.row
+				.col-xs-4
+				.col-xs-4
+					form(action='/createeventpage', method='post')
+						input(type="hidden", name='groupName', value=givenTitle)
+						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Event
+					
+

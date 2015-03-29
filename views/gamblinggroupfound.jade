@@ -1,0 +1,28 @@
+extends layout
+
+mixin createEvent(number)
+
+block content
+	.container-fluid
+		.jumbotron
+			h1#title Gambling4em
+			h2#subtitle=givenTitle
+			br
+			.row
+				.col-xs-4
+				.col-xs-4
+					form(action='/createeventpage', method='post')
+						input(type="hidden", name='groupName', value=givenTitle)
+						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Event
+			br
+			.row
+				each eventy, i in events
+					.col-xs-4
+						.boxme
+							h3=eventy.eventName
+							h6.createdby Created by #{events[number].eventCreator]}
+							h2=
+							h4 vs.
+							h2=
+					
+

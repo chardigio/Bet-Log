@@ -1,26 +1,27 @@
-p Group Name:
-form(action='/creategroup', method='post')
-	input(type="text", name="groupName")
+extends layout
 
-.container-fluid
-	.jumbotron
-		h1#title=givenTitle
-		p#subtitle Place your bets using our site!
-		br
-		br
-		br
-		br
-		br
-		br
-		.row
-			.col-xs-4
-			.col-xs-4#createcol
-				button.btn.btn-primary.btn-lg.btn-block(type="button") Create Group
-			.col-xs-4
-		br
-		.row
-			.col-xs-4
-			.col-xs-4
-				button.btn.btn-primary.btn-lg.btn-block(type="button") Join Group
-			.col-xs-4
+block content
+	.container-fluid
+		.jumbotron
+			h1#title=givenTitle
+			h2#subtitle Place your bets using our site!
+			br
+			br
+			br
+			br
+			br
+			br
+			.row
+				.col-xs-4
+				.col-xs-4
+					form(action='/creategrouppage', method='post')
+						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Group
+				.col-xs-4
+			br
+			.row
+				.col-xs-4
+				.col-xs-4
+					form(action='/joingrouppage', method='post')
+						button.btn.btn-primary.btn-lg.btn-block(type="submit") Join Group
+				.col-xs-4
 
