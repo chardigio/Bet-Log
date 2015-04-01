@@ -6,6 +6,11 @@ body{
 	font-family: 'Skia';
 }
 
+.container-fluid{
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
 .jumbotron {
 	background: rgb(200, 54, 54); /* This is for ie8 and below */
    	background: rgba(200, 54, 54, 0.0); 
@@ -41,10 +46,27 @@ img {
 	height : 100%;
 }
 
+.boxed{
+	text-decoration: none !important;
+	color:white;
+}
+
 .boxme {
 	border: 5px solid white;
 	border-radius: 5px;
 	padding: 10px;
 	background: rgb(200, 54, 54); /* This is for ie8 and below */
-   	background: rgba(200, 54, 54, 0.5); 
+   	background: rgba(200, 54, 54, 0.5);
+   	color: white;   
+   	text-decoration: none !important;	
+}
+
+.boxme:hover {
+	border: 5px solid white;
+	border-radius: 5px;
+	padding: 10px;
+	background: rgb(200, 100, 54); /* This is for ie8 and below */
+   	background: rgba(200, 0, 54, 0.5);
+   	color: white;
+   	text-decoration: none !important;
 }

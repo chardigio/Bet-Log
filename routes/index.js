@@ -8,12 +8,14 @@ router.get('/', function(req, res){
 		givenScript:"../javascripts/gamblinghome.js"});
 });
 
+//for testing purposes
 router.get('/createbet', function(req,res){
 	res.redirect('/');
 });
 
+//for testing purposes
 router.get('/joingroup',function(req,res){
-	Group.findGroupEvents('m', function(err, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray){
+	Group.findGroupEvents('chch', function(err, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray){
 		console.log(eventIDArray);
 		console.log(eventNameArray);
 		console.log(eventCreatorArray);
@@ -26,12 +28,12 @@ router.get('/joingroup',function(req,res){
 //POST REQUESTS
 router.post('/creategrouppage', function(req,res){
 	res.render('gamblingcreategroup', {givenTitle:"Gambling4em", givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblingcreategroup.js"})
+			givenScript:"../javascripts/gamblinghome.js"})
 });
 
 router.post('/joingrouppage', function(req,res){
 	res.render('gamblingjoingroup', {givenTitle:"Gambling4em", givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblingcreategroup.js"})
+			givenScript:"../javascripts/gamblinghome.js"})
 });
 
 router.post('/creategroup', function(req, res){
@@ -39,7 +41,7 @@ router.post('/creategroup', function(req, res){
 	Group.addGroup(groupName, function(err, group){
 		if (err) throw (err);
 		res.render('gamblinggroup',{givenTitle:groupName, givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblinggroup.js"});
+			givenScript:"../javascripts/gamblinghome.js"});
 	});
 });
 
@@ -54,7 +56,8 @@ router.post('/joingroup', function(req,res){
 		console.log("woo!");
 		if (err) throw (err);
 		res.render('gamblinggroupfound', {givenTitle:groupName, givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblinggroup.js", eventss:evns});
+			givenScript:"../javascripts/gamblinghome.js", eventIDArray:eventIDArray, eventNameArray:eventNameArray, 
+			eventCreatorArray:eventCreatorArray, optionIDArray:optionIDArray, optionNameArray:optionNameArray});
 	});
 });
 
@@ -74,8 +77,8 @@ router.post('/createevent',function(req,res){
 	Group.addEvent(groupName, eventName, eventCreator, options, function(err, group){
 		if (err) throw (err);
 		res.render('gamblingevent',{givenTitle:eventName, groupName:groupName, eventName:eventName, 
-			eventCreator:eventCreator, opt1:options[0], opt2:options[1], givenStyle:"../stylesheets/gamblinggroup.css",
-			givenScript:"../javascripts/gamblinggroup.js"});
+			eventCreator:eventCreator, opt1:options[0], opt2:options[1], givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"});
 	});
 });
 

@@ -31,6 +31,7 @@ var GroupSchemaOriginal = new db.Schema({
 		    }
 		 ]
 });
+
 var MyGroupOriginal = db.mongoose.model('GroupOriginal', GroupSchemaOriginal);
 
 var GroupSchema = new db.Schema({
@@ -80,78 +81,59 @@ exports.addGroup = function(groupName, callback){
 }
 
 exports.findGroupEvents = function(groupName, callback){
+	var complete=false;
 	MyGroup.findOne({groupName:groupName}, function(err,group){
 		if (err){
-			console.err;
 			callback(err);
 		}
 		var eventIDArray = [];
 		for (var i=0; i<group.events.length; i++){
 			eventIDArray.push(group.events[i].identifier.toString());
 		}
-		console.log(eventIDArray.toString());
 		var eventNameArray=[];
 		var eventCreatorArray=[]
-		var optionIDArray=[[]];
+		var optionIDArray=[];
+		var optionNameArray=[];
 		var eventNumber=0;
-		//for (var iterator=0;iterator<eventIDArray.length;iterator++){
-		//	console.log(eventIDArray[iterator]);
-		MyEvent.findById(eventIDArray[0], function(err, eventy){
-			//if (err){
-			//	console.err;
-				//callback(err)
-			//}
-			//console.log(eventy);
-			/*
-			eventNameArray.push(eventy.eventName);
-			eventCreatorArray.push(eventy.eventCreator);
-			var thisEventOptions = []
-			for (var i=0; i<eventy.options.length; i++){
-				thisEventOptions.push(eventy.options[i].identifier);
-			}
-			optionIDArray.push(thisEventOptions);
-			eventNumber++;
-			console.log(eventNumber);
-			if (eventNumber<eventIDArray.length){
-				eventContentFind();
-			}else{
-				var optionNameArray=[[]];
-				var optionIDMapped = [];
-				for (var a=0; a<optionIDArray.length; a++){
-					for (var b=0; b<optionIDArray[a].length; a++){
-						optionIDMapped.push([optionIDArray[a][b],a,b])
+		for (var a=0;a<eventIDArray.length;a++){
+			MyEvent.findById(eventIDArray[a], function(err, eventy){
+				if (err){
+					callback(err);
+				}
+				eventNameArray.push(eventy.eventName);
+				eventCreatorArray.push(eventy.eventCreator);
+				var thisEventOptIds = []
+				for (var i=0; i<eventy.options.length; i++){
+					thisEventOptIds.push(eventy.options[i].identifier);
+					if (i==eventy.options.length-1){
+						optionIDArray.push(thisEventOptIds);
 					}
 				}
-				var optionNumber=0;
-				function optionContentFind(){
-					MyOption.findOne({_id:optionIDMapped[optionNumber]},function(err, option){
+				var thisEventOptNames=[];
+				var found = 0;
+				for (var b=0; b<thisEventOptIds.length; b++){
+					MyOption.findById(thisEventOptIds[b], function(err, opt){
 						if (err){
 							callback(err);
-						}else{
-							optionNameArray[optionIDMapped[optionNumber][1]][optionIDMapped[optionNumber][2]]=option.optionName;
-							optionNumber++;
-							if (optionNumber<optionIDMapped.length){
-								optionContentFind();
-							}else{
-								callback(null, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray);
-							}
+						}
+						thisEventOptNames.push(opt.optionName);
+						if (++found==thisEventOptIds.length){
+							optionNameArray.push(thisEventOptNames);
+							callback(null, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray);
 						}
 					});
 				}
-			}*/
-		});
-		//}
+			});
+		}
 	});
 }
 
 var optionNumber=0;
+var optionsInstance = [];
 exports.addEvent = function addEventFunction(groupName, eventName, eventCreator, options, callback){
-	var optionsInstance = [];
-	for (var i=0; i<options.length; i++){
-		optionsInstance[i] = new MyOption();
-		optionsInstance[i].optionName = options[i];
-		optionsInstance[i].betters = [];
-	}
+	optionsInstance[optionNumber] = new MyOption();
+	optionsInstance[optionNumber].optionName = options[optionNumber];
+	optionsInstance[optionNumber].betters = [];
 	optionsInstance[optionNumber].save(function(err){
 		if (err){
 			console.err;
@@ -165,8 +147,9 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventCreator,
 			eventInstance.eventName = eventName;
 			eventInstance.eventCreator = eventCreator;
 			for (var i = 0; i<options.length; i++){
-				eventInstance.options[i]=optionsInstance[i].id;
+				eventInstance.options[i]={identifier:optionsInstance[i].id};
 			}
+			console.log(optionsInstance);
 			eventInstance.messages = [];
 			eventInstance.save(function(err){
 				if (err){
