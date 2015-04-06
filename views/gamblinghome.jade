@@ -4,7 +4,7 @@ block content
 	.container-fluid
 		.jumbotron
 			h1#title=givenTitle
-			h2#subtitle Place your bets using our site!
+			h3#subtitle Place your bets using our site!
 			br
 			br
 			br
@@ -12,16 +12,16 @@ block content
 			br
 			br
 			.row
-				.col-xs-4
-				.col-xs-4
+				.col-xs-3
+				.col-xs-6
 					form(action='/creategrouppage', method='post')
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Group
-				.col-xs-4
+				.col-xs-3
 			br
 			.row
-				.col-xs-4
-				.col-xs-4
+				.col-xs-3
+				.col-xs-6
 					form(action='/joingrouppage', method='post')
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Join Group
-				.col-xs-4
+				.col-xs-3
 

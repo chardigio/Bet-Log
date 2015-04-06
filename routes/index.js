@@ -8,20 +8,21 @@ router.get('/', function(req, res){
 		givenScript:"../javascripts/gamblinghome.js"});
 });
 
-//for testing purposes
-router.get('/createbet', function(req,res){
-	res.redirect('/');
+router.get('/group/:groupName',function(req,res){
+	var groupName = req.params.groupName;
+	Group.findGroupEvents(groupName, function(err, events, options){
+		if (err) throw (err);
+		res.render('gamblinggroupfound', {givenTitle:groupName, givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js", events:events, options:options});
+	});
 });
 
-//for testing purposes
-router.get('/joingroup',function(req,res){
-	Group.findGroupEvents('chch', function(err, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray){
-		console.log(eventIDArray);
-		console.log(eventNameArray);
-		console.log(eventCreatorArray);
-		console.log(optionIDArray);
-		console.log(optionNameArray);
-		console.log("woo!");
+router.get('/event/:eventId',function(req,res){
+	var eventId = req.params.eventId;
+	Group.findEvent(eventId, function(err, eventy, options, bets){
+		res.render('gamblingevent', {givenTitle:eventy.eventName, event:eventy, 
+			 options:options, bets:bets, givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"});
 	});
 });
 
@@ -38,27 +39,15 @@ router.post('/joingrouppage', function(req,res){
 
 router.post('/creategroup', function(req, res){
 	var groupName = req.body.groupName;
-	Group.addGroup(groupName, function(err, group){
+	Group.addGroup(groupName, function(err,group){
 		if (err) throw (err);
-		res.render('gamblinggroup',{givenTitle:groupName, givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblinghome.js"});
+		res.redirect('/group/'+groupName);
 	});
 });
 
 router.post('/joingroup', function(req,res){
 	var groupName = req.body.groupName;
-	Group.findGroupEvents(groupName, function(err, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray){
-		console.log(eventIDArray);
-		console.log(eventNameArray);
-		console.log(eventCreatorArray);
-		console.log(optionIDArray);
-		console.log(optionNameArray);
-		console.log("woo!");
-		if (err) throw (err);
-		res.render('gamblinggroupfound', {givenTitle:groupName, givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblinghome.js", eventIDArray:eventIDArray, eventNameArray:eventNameArray, 
-			eventCreatorArray:eventCreatorArray, optionIDArray:optionIDArray, optionNameArray:optionNameArray});
-	});
+	res.redirect('/group/'+groupName);
 });
 
 router.post('/createeventpage', function(req, res){
@@ -69,30 +58,33 @@ router.post('/createeventpage', function(req, res){
 
 router.post('/createevent',function(req,res){
 	var options = [];
-	var groupName = req.body.groupName,
-		eventName= req.body.eventName,
-		eventCreator = req.body.eventCreator;
+	var groupName = req.body.groupName;
+	var eventName= req.body.eventName;
+	var eventCreator = req.body.eventCreator;
 	options[0] = req.body.option1;
-	options[1] = req.body.option2;
-	Group.addEvent(groupName, eventName, eventCreator, options, function(err, group){
+	options[1] = req.body.option2; //@add generality
+	Group.addEvent(groupName, eventName, eventCreator, options, function(err, eventId){
 		if (err) throw (err);
-		res.render('gamblingevent',{givenTitle:eventName, groupName:groupName, eventName:eventName, 
-			eventCreator:eventCreator, opt1:options[0], opt2:options[1], givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblinghome.js"});
+		res.redirect('/event/'+eventId)
 	});
 });
 
-router.post('/createbet',function(req,res){
-	var groupName= req.body.groupName,
-	    eventName= req.body.eventName,
-	    team= req.body.team,
-	    amount = req.body.amount,
-		better=req.body.better,
-		address=req.body.address;
+router.post('/createbetpage',function(req,res){
+	var option = req.body.option;
+	res.render('gamblingcreatebet', {givenTitle:req.body.option, givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"})
+});
 
-	Group.addBet(groupName, eventName, better, address, amount, team, function(err, group){
+router.post('/createbet',function(req,res){
+	var event= req.body.event,
+		option= req.body.option,
+	    betterName= req.body.betterName,
+	    betterAmount= req.body.betterAmount,
+	    betterAddress = req.body.betterAddress;
+
+	Group.addBet(option, betterName, betterAmount, betterAddress, function(err){
 		if (err) throw (err);
-		res.redirect('/')
+		res.redirect('/event/'+ event);
 	});
 });
 

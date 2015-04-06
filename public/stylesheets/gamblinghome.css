@@ -3,7 +3,7 @@ body{
 	background-size: 100%;
 	background-position: center;
 	background-color: black;
-	font-family: 'Skia';
+	font-family: 'Baskerville';
 }
 
 .container-fluid{
@@ -46,12 +46,7 @@ img {
 	height : 100%;
 }
 
-.boxed{
-	text-decoration: none !important;
-	color:white;
-}
-
-.boxme {
+.boxed {
 	border: 5px solid white;
 	border-radius: 5px;
 	padding: 10px;
@@ -61,7 +56,7 @@ img {
    	text-decoration: none !important;	
 }
 
-.grppagebox:hover {
+.boxed:hover {
 	border: 5px solid white;
 	border-radius: 5px;
 	padding: 10px;

@@ -1,0 +1,33 @@
+extends layout
+
+block content
+	.container-fluid
+		.jumbotron
+			h1#title Gambling4em
+			h2#subtitle=groupName
+			br
+			br
+			.row
+				.col-xs-3
+				.col-xs-6.boxme(align='center')
+					form(action="/createbet",method="post")
+						fieldset
+							input(type="hidden", name='event', value=event)
+							input(type="hidden", name='option', value=option)
+							br
+							p Name
+							input(type="text", name="betterName", placeholder="Name")
+							br
+							br
+							p Amount
+							input(type="text", name="betterAmount", placeholder="Amount")
+							br
+							br
+							p Phone Number
+							input(type="text", name="betterAddress", placeholder="XXXXXXXXXX")
+							br
+							br
+							button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Bet
+			br
+			br
+			br

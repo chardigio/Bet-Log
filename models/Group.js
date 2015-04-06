@@ -1,7 +1,7 @@
 var db = require('../db');
 var ObjectId = db.Schema.Types.ObjectId;
 
-//deprecated
+/*
 var GroupSchemaOriginal = new db.Schema({
 	groupName : String,
     events : [ 
@@ -11,29 +11,30 @@ var GroupSchemaOriginal = new db.Schema({
     			completed: Boolean,
     			options:[
 				   {
-					optionName: String,
-    				betters: [
-						     {
-							  	betterName: String,
-    							betterAddress: String,
-    							betterAmount: Number
-						     }
-						 ],
-  					winner: Boolean
+						optionName: String,
+	    				betters: [
+							     {
+								  	betterName: String,
+	    							betterAddress: String,
+	    							betterAmount: Number
+							     }
+							 ],
+	  					winner: Boolean
 				    }
 				],
     			messages: [
 				      {
-					   messageFrom: String,
-					   messageText: String
+						   messageFrom: String,
+						   messageText: String
 			 	      }
 				  ]
 		    }
 		 ]
 });
-
 var MyGroupOriginal = db.mongoose.model('GroupOriginal', GroupSchemaOriginal);
+*/
 
+//schema
 var GroupSchema = new db.Schema({
 	groupName: {type: String, index: {unique: true}},
 	events: [{identifier:String}]
@@ -66,7 +67,10 @@ var MessageSchema = new db.Schema({
 	from:String,
 	content:String
 });
+var MyMessage = db.mongoose.model('Message', MessageSchema);
 
+
+//functions
 exports.addGroup = function(groupName, callback){
 	var instance = new MyGroup();
 	instance.groupName = groupName;
@@ -76,54 +80,6 @@ exports.addGroup = function(groupName, callback){
 			callback(err);
 		}else{
 			callback(null, instance);
-		}
-	});
-}
-
-exports.findGroupEvents = function(groupName, callback){
-	var complete=false;
-	MyGroup.findOne({groupName:groupName}, function(err,group){
-		if (err){
-			callback(err);
-		}
-		var eventIDArray = [];
-		for (var i=0; i<group.events.length; i++){
-			eventIDArray.push(group.events[i].identifier.toString());
-		}
-		var eventNameArray=[];
-		var eventCreatorArray=[]
-		var optionIDArray=[];
-		var optionNameArray=[];
-		var eventNumber=0;
-		for (var a=0;a<eventIDArray.length;a++){
-			MyEvent.findById(eventIDArray[a], function(err, eventy){
-				if (err){
-					callback(err);
-				}
-				eventNameArray.push(eventy.eventName);
-				eventCreatorArray.push(eventy.eventCreator);
-				var thisEventOptIds = []
-				for (var i=0; i<eventy.options.length; i++){
-					thisEventOptIds.push(eventy.options[i].identifier);
-					if (i==eventy.options.length-1){
-						optionIDArray.push(thisEventOptIds);
-					}
-				}
-				var thisEventOptNames=[];
-				var found = 0;
-				for (var b=0; b<thisEventOptIds.length; b++){
-					MyOption.findById(thisEventOptIds[b], function(err, opt){
-						if (err){
-							callback(err);
-						}
-						thisEventOptNames.push(opt.optionName);
-						if (++found==thisEventOptIds.length){
-							optionNameArray.push(thisEventOptNames);
-							callback(null, eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray);
-						}
-					});
-				}
-			});
 		}
 	});
 }
@@ -149,7 +105,6 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventCreator,
 			for (var i = 0; i<options.length; i++){
 				eventInstance.options[i]={identifier:optionsInstance[i].id};
 			}
-			console.log(optionsInstance);
 			eventInstance.messages = [];
 			eventInstance.save(function(err){
 				if (err){
@@ -163,7 +118,7 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventCreator,
 						if (err){
 							console.err;
 						}else{
-							callback(null,eventInstance)
+							callback(null,eventInstance.id)
 						}
 				});
 				
@@ -172,22 +127,132 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventCreator,
 	});
 }
 
-//deprecated
-exports.addBet = function(groupName, eventName, betterName, betterAddress, betterAmount, teamName, callback){
-	MyGroup.update({'events.eventName':eventName}/*{events: {$elemMatch: {'groupName':groupName, 'events.eventName':eventName, 'events.options.teamName':teamName}}}*/,
-		{$push: {events/*'events.options.betters'*/: {
-			betterName: betterName,
-			betterAddress: betterAddress,
-			betterAmount: betterAmount
-			}
-		}},
-		function(err,updatedDoc){
-			if (err) {
-				console.log('kno');
-				callback(err);
-			}else{
-				console.log('k');
-				callback(null,updatedDoc);
-			}
+exports.findGroupEvents = function(groupName, callback){
+	var complete=false;
+	MyGroup.findOne({groupName:groupName}, function(err,group){
+		if (err){
+			callback(err);
+		}
+		if (group.events.length==0){
+			callback(null,[],[],[],[],[]);
+		}
+		var eventIds = [];
+		for (var i=0; i<group.events.length; i++){
+			eventIds.push(group.events[i].identifier.toString());
+		}
+		var events=[];
+		var optionIds=[];
+		var options=[]; //to be double array
+		var eventNumber=0;
+		var callReady = 0;
+		for (var a=0;a<eventIds.length;a++){
+			(function(a){
+				MyEvent.findById(eventIds[a], function(err, eventy){
+					if (err){
+						callback(err);
+					}
+					events[a]=eventy;
+					var thisEventOptIds = []
+					for (var i=0; i<eventy.options.length; i++){
+						thisEventOptIds.push(eventy.options[i].identifier);
+						if (i==eventy.options.length-1){
+							optionIds.push(thisEventOptIds);
+						}
+					}
+					var thisEventOptions=[];
+					var pushReady=0
+					for (var b=0; b<thisEventOptIds.length; b++){
+						(function(b){
+							MyOption.findById(thisEventOptIds[b], function(err, opt){
+								if (err){
+									callback(err);
+								}
+								thisEventOptions[b]=opt;
+								if (++pushReady==thisEventOptIds.length){
+									options[a]=thisEventOptions;
+									console.log(a,b);
+								}
+								if (++callReady==thisEventOptIds.length*eventIds.length){
+									callback(null, events, options);
+								}
+							});
+						})(b);
+					}
+				});
+			})(a);
+		}
+	});
+}
+
+exports.findEvent = function(eventId, callback){
+	MyEvent.findById(eventId, function(err, eventy){
+		if (err){
+			callback(err);
+		}
+		var optionIds = eventy.options;
+		var optionNumber=0;
+		var totalBets = 0;
+		var callReady=0;
+		var options = [];
+		var bets = []; //to be double array
+		for (var i=0; i<optionIds.length; i++){
+			MyOption.findById(optionIds[i].identifier, function(err, option){
+				if (err){
+					callback(err);
+				}
+				options[a]=option;
+				totalBets+=option.betters.length;
+				var optionBets = [];
+				var betNumber=0;
+				if (++optionNumber==optionIds.length && totalBets==0){
+					bets.push(optionBets);
+					console.log(eventy);
+					console.log(options);
+					console.log('NO BETS');
+					console.log(bets);
+					callback(null, eventy, options, bets);
+				}
+				for (var j=0; j<option.betters.length; j++){
+					MyBetter.findById(option.identifier, function(err, bet){
+						if (err){
+							callback(err);
+						}
+						optionBets[b]=bet;
+						if (++betNumber==option.betters.length){
+							bets.push(optionBets);
+						}
+						if (++callReady==optionIds.length*option.betters.length){
+							console.log(eventy);
+							console.log(options);
+							console.log(bets);
+							callback(null, eventy, options, bets);
+						}
+					});
+				}
+			});
+		}
+	});
+}
+
+exports.addBet = function(event, option, name, amount, address, callback){
+	var betInstance = MyBetter();
+	betInstance.betterName = name;
+	betInstance.betterAmount = amount;
+	betInstance.address = address;
+	betInstance.save(function(err){
+		if (err){
+			callback(err);
+		}
+		MyOption.update({_id: option.id}, 
+			{$push: {'betters': {
+						   identifier: betInstance.id,
+					   } }
+			}, function(err,option){
+				if (err){
+					callback(err);
+				}else{
+					callback(null);
+				}
 		});
+	});
 }

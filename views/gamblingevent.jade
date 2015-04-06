@@ -2,35 +2,29 @@ extends layout
 
 block content
 	.container-fluid
-		h1=givenTitle
-		h3 Created by #{eventCreator}
-		.row
-			.col-xs-2
-				h3=opt1
-			.col-xs-2
-				h3=opt2
-		.row
-			.col-xs-2
-				form(action='/createbet',method='post')
-					input(type="hidden", name='groupName', value=groupName)
-					input(type="hidden", name='eventName', value=eventName)
-					input(type="hidden", name='team', value=opt1)
-					p Name
-					input(type='text', name='better')
-					p Address
-					input(type='email', name='email')
-					p Amount
-					input(type='number', name='amount')
-					input.button(type='submit')
-			.col-xs-2
-					input(type="hidden", name='groupName', value=groupName)
-					input(type="hidden", name='eventName', value=eventName)
-					input(type="hidden", name='team', value=opt2)
-					form(action='/createbet',method='post')
-					p Name
-					input(type='text', name='better')
-					p Address
-					input(type='email', name='email')
-					p Amount
-					input(type='text', name='amount')
-					input.button(type='submit')
+		.jumbotron
+			h1#title Gambling4em
+			h2#subtitle=givenTitle
+			h5#subtitle Created by #{event.eventCreator}
+			br
+			br
+			br
+			.row
+				each option, i in options
+					.col-xs-6.col-sm-6
+						form(action='/createbetpage', method='post')
+							input(type="hidden", name='event', value=event);
+							input(type="hidden", name='optionId', value=option.id)
+							button.btn.btn-primary.btn-lg.btn-block(type="submit") Place Bet
+						br
+						br
+						button.btn.btn-primary.btn-lg.btn-block.boxed(align='center')
+							h3=option.optionName
+							if bets[0].length==0
+								h3 No bets have been placed
+							else
+								for bet in bets[i]
+									h3 #{bet.betterName} has bet #{bet.betterAmount}
+									h6 #{bet.betterAddress}
+
+						

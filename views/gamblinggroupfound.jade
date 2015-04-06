@@ -9,22 +9,26 @@ block content
 			h2#subtitle=givenTitle
 			br
 			.row
-				.col-xs-4
-				.col-xs-4
+				.col-xs-3.col-md-4
+				.col-xs-6.col-md-4
 					form(action='/createeventpage', method='post')
 						input(type="hidden", name='groupName', value=givenTitle)
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Event
 			br
+			br
+			br
 			.row
-				each eventName, i in eventNameArray
-					.col-xs-4
-						a(href='/')
-							.boxme.grppagebox(align='center')
-								h3.boxed=eventName
-								h6.boxed Created by !{eventCreatorArray[i]}
-								h2.boxed=optionNameArray[i][0]
-								h4.boxed vs.
-								h2.boxed=optionNameArray[i][1]
+				each event, i in events
+					//.col-xs-2.col-sm-hidden.col-md-hidden.col-lg-hidden
+					.col-xs-12.col-sm-6
+						button.btn.btn-primary.btn-lg.btn-block.boxed(align='center')
+							h3=event.eventName
+							h6 Created by !{events[i].eventCreator}
+							h2=options[i][0].optionName
+							h4 vs.
+							h2=options[i][1].optionName
+						br.col-md-hidden
+						br.bol-md-hidden
 					
 
 //(eventIDArray, eventNameArray, eventCreatorArray, optionIDArray, optionNameArray
