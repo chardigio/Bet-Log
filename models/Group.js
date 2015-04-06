@@ -200,7 +200,7 @@ exports.findEvent = function(eventId, callback){
 				if (err){
 					callback(err);
 				}
-				options[a]=option;
+				options.push(option);
 				totalBets+=option.betters.length;
 				var optionBets = [];
 				var betNumber=0;
