@@ -128,7 +128,7 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventCreator,
 }
 
 exports.findGroupEvents = function(groupName, callback){
-	var complete=false;
+	console.log(groupName);
 	MyGroup.findOne({groupName:groupName}, function(err,group){
 		if (err){
 			callback(err);

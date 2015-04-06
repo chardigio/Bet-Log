@@ -47,6 +47,7 @@ router.post('/creategroup', function(req, res){
 
 router.post('/joingroup', function(req,res){
 	var groupName = req.body.groupName;
+	console.log(groupName);
 	res.redirect('/group/'+groupName);
 });
 
