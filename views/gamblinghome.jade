@@ -3,8 +3,10 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			h1#title=givenTitle
-			h3#subtitle Place your bets using our site!
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			h3#subtitle Organize Your Bets Here
 			br
 			br
 			br

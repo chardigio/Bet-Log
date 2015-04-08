@@ -3,28 +3,55 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			h1#title Gambling4em
-			h3#subtitle=givenTitle
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			form(action='/group/#{event.groupName}', method='get', align='center')
+				button.titlebutton
+					h3#subtitle=event.groupName
+			br
+			form(action='/event/#{event.id}', method='get', align='center')
+				button.titlebutton
+					h2#subtitle=event.eventName
 			h5#subtitle Created by #{event.eventCreator}
 			br
-			br
-			br
 			.row
-				each option, i in options
-					.col-xs-6.col-sm-6
+				each option in options
+					.col-xs-6
+						h3(align='center')=option.optionName
+						br
 						form(action='/createbetpage', method='post')
-							input(type="hidden", name='event', value=event);
+							input(type="hidden", name='groupName', value=event.groupName)
+							input(type="hidden", name='eventId', value=event.id)
 							input(type="hidden", name='optionId', value=option.id)
 							button.btn.btn-primary.btn-lg.btn-block(type="submit") Place Bet
 						br
-						br
-						button.btn.btn-primary.btn-lg.btn-block.boxed(align='center')
-							h3=option.optionName
-							if bets[0].length==0
-								h3 No bets have been placed
-							else
-								for bet in bets[i]
-									h3 #{bet.betterName} has bet #{bet.betterAmount}
-									h6 #{bet.betterAddress}
+						br			
+						-var betsInOption = 0;
+						each bet in bets
+							if bet.optionId==option.id
+								-betsInOption++
+								button.btn-block.boxed
+									br
+									p(align='center') #{bet.betterName}: $#{bet.betterAmount}
+						if betsInOption==0
+							button.btn-block.boxed(align='center')
+								br
+								p No bets have been placed
+			.row
+				.col-xs-3
+				.col-xs-6
+					form(action='/selectwinpage', method='post')
+							input(type="hidden", name='groupName', value=event.groupName)
+							input(type="hidden", name='eventId', value=event.id)
+							input(type="hidden", name='eventName', value=event.eventName)
+							input(type="hidden", name='eventCreator', value=event.eventCreator)
+							input(type="hidden", name='opt1id', value=options[0].id)
+							input(type="hidden", name='opt2id', value=options[1].id)
+							input(type="hidden", name='opt1name', value=options[0].optionName)
+							input(type="hidden", name='opt2name', value=options[1].optionName)
+							button.btn.btn-primary.btn-lg.btn-block(type="submit") Select Winner
+
+
 
 						

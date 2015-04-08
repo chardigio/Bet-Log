@@ -1,0 +1,34 @@
+extends layout
+
+block content
+	.container-fluid
+		.jumbotron
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			form(action='/group/#{groupName}', method='get', align='center')
+				button.titlebutton
+					h3#subtitle=groupName
+			br
+			form(action='/event/#{eventId}', method='get', align='center')
+				button.titlebutton
+					h2#subtitle=eventName
+			h5#subtitle Created by #{eventCreator}
+			br
+			br
+			h3#subtitle Access Granted!
+			br
+			br
+			.row
+				.col-xs-6
+						form(action='/selectwin', method='post')
+							input(type="hidden", name='groupName', value=groupName)
+							input(type="hidden", name='eventId', value=eventId)
+							input(type="hidden", name='optId', value=opt1id)
+							button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt1name
+				.col-xs-6
+						form(action='/selectwin', method='post')
+							input(type="hidden", name='groupName', value=groupName)
+							input(type="hidden", name='eventId', value=eventId)
+							input(type="hidden", name='optId', value=opt2id)
+							button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt2name

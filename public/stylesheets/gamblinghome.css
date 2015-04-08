@@ -65,3 +65,14 @@ img {
    	color: white;
    	text-decoration: none !important;
 }
+
+.titlebutton {
+	margin: auto;
+	border: 0px solid white;
+	border-radius: 0px;
+	padding: 0px;
+	background: rgb(200, 100, 54); /* This is for ie8 and below */
+   	background: rgba(200, 0, 54, 0.0);
+   	color: white;
+   	text-decoration: none !important;
+}

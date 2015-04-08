@@ -3,8 +3,12 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			h1#title Gambling4em
-			h3#subtitle=groupName
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			form(action='/group/#{groupName}', method='get', align='center')
+				button.titlebutton
+					h4#subtitle=groupName
 			br
 			br
 			.row
@@ -13,21 +17,31 @@ block content
 					form(action="/createevent",method="post")
 						fieldset
 							br
-							input(type="hidden", name='groupName', value=groupName)
+							.input-group
+								input.form-control(type="hidden", name='groupName', value=groupName)
 							p Event Name
-							input(type="text", name="eventName", placeholder="Event Name")
+							.input-group
+								input.form-control(type="text", name="eventName", placeholder="Event Name")
 							br
 							br
 							p Event Creator
-							input(type="text", name="eventCreator", placeholder="Event Creator")
+							.input-group
+								input.form-control(type="text", name="eventCreator", placeholder="Event Creator")
+							br
+							br
+							p Event Password
+							.input-group
+								input.form-control(type="text", name="eventPassword", placeholder="Event Password")
 							br
 							br
 							p Option 1
-							input(type="text", name="option1", placeholder="Option 1")
+							.input-group
+								input.form-control(type="text", name="option1", placeholder="Option 1")
 							br
 							br
 							p Option 2
-							input(type="text", name="option2", placeholder="Option 2")
+							.input-group
+								input.form-control(type="text", name="option2", placeholder="Option 2")
 							br
 							br
 							br

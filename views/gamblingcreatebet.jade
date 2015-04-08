@@ -3,28 +3,51 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			h1#title Gambling4em
-			h3#subtitle=groupName
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			form(action='/group/#{groupName}', method='get', align='center')
+				button.titlebutton
+					h4#subtitle=groupName
 			br
 			br
 			.row
 				.col-xs-3
 				.col-xs-6.boxme(align='center')
-					form(action="/createbet",method="post")
+					form(action="/createbet", method="post")
 						fieldset
-							input(type="hidden", name='event', value=event)
-							input(type="hidden", name='option', value=option)
+							input(type="hidden", name='groupName', value=groupName)
+							input(type="hidden", name='eventId', value=eventId)
+							input(type="hidden", name='optionId', value=optionId)
 							br
 							p Name
-							input(type="text", name="betterName", placeholder="Name")
+							.input-group
+								input.form-control(type="text", name="betterName", placeholder="Name")
 							br
 							br
 							p Amount
-							input(type="text", name="betterAmount", placeholder="Amount")
+							.input-group
+								input.form-control(type="text", name="betterAmount", placeholder="Amount")
 							br
 							br
 							p Phone Number
-							input(type="text", name="betterAddress", placeholder="XXXXXXXXXX")
+							.input-group
+								input.form-control(type="text", name="betterAddress", placeholder="XXXXXXXXXX")
+							br
+							br
+							p Carrier
+							.input-group
+								select.form-control(id="carrierselect", name="carrier")
+									option 
+										a(href="#") AT&T
+									option 
+										a(href="#") Sprint
+									option 
+										a(href="#") T-Mobile
+									option
+										a(href="#") Verizon
+									option 
+										a(href="#") Not listed
 							br
 							br
 							button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Bet

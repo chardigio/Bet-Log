@@ -3,8 +3,10 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			h1#title=givenTitle
-			h3#subtitle Place your bets using our site!
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			h3#subtitle Organize Your Bets Here
 			br
 			br
 			br
@@ -14,10 +16,10 @@ block content
 				.col-xs-6.boxme(align='center')
 					h3 Group Name
 					form(action='/joingroup', method='post')
-						fieldset
-							input(type="text", name="groupName", placeholder="Group Name")
-							br
-							br
-							button.btn.btn-primary.btn-lg.btn-block(type="submit") Join Group
+						.input-group
+							input.form-control(type="text", name="groupName", placeholder="Group Name")
+						br
+						br
+						button.btn.btn-primary.btn-lg.btn-block(type="submit") Join Group
 				.col-xs-3
 			br

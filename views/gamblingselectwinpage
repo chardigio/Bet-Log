@@ -1,0 +1,16 @@
+extends layout
+
+block content
+	.container-fluid
+		.jumbotron
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Gambling4em
+			form(action='/group/#{groupName}', method='get', align='center')
+				button.titlebutton
+					h3#subtitle=groupName
+			br
+			form(action='/event/#{event.id}', method='get', align='center')
+				button.titlebutton
+					h2#subtitle=event.eventName
+			h5#subtitle Created by #{event.eventCreator}
