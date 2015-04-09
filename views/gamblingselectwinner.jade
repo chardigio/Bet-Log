@@ -24,11 +24,13 @@ block content
 						form(action='/selectwin', method='post')
 							input(type="hidden", name='groupName', value=groupName)
 							input(type="hidden", name='eventId', value=eventId)
-							input(type="hidden", name='optId', value=opt1id)
+							input(type="hidden", name='winOptId', value=opt1id)
+							input(type="hidden", name='loseOptId', value=opt2id)
 							button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt1name
 				.col-xs-6
 						form(action='/selectwin', method='post')
 							input(type="hidden", name='groupName', value=groupName)
 							input(type="hidden", name='eventId', value=eventId)
-							input(type="hidden", name='optId', value=opt2id)
+							input(type="hidden", name='winOptId', value=opt2id)
+							input(type="hidden", name='loseOptId', value=opt1id)
 							button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt2name

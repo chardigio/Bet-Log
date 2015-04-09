@@ -9,6 +9,7 @@ block content
 			form(action='/group/#{groupName}', method='get', align='center')
 				button.titlebutton
 					h4#subtitle=groupName
+			h3#subtitle=optionName
 			br
 			br
 			.row
@@ -19,6 +20,7 @@ block content
 							input(type="hidden", name='groupName', value=groupName)
 							input(type="hidden", name='eventId', value=eventId)
 							input(type="hidden", name='optionId', value=optionId)
+							input(type="hidden", name='optionName', value=optionName)
 							br
 							p Name
 							.input-group

@@ -22,7 +22,6 @@ router.get('/group/:groupName',function(req,res){
 router.get('/event/:eventId',function(req,res){
 	var eventId = req.params.eventId;
 	Group.findEvent(eventId, function(err, eventy, options, bets){
-		console.log('bets:' + bets);
 		res.render('gamblingevent', {givenTitle:eventy.eventName, event:eventy, 
 			 options:options, bets:bets, givenStyle:"../stylesheets/gamblinghome.css",
 			givenScript:"../javascripts/gamblinghome.js"});
@@ -80,50 +79,41 @@ router.post('/createbetpage',function(req,res){
 	var optionId = req.body.optionId;
 	var eventId = req.body.eventId;
 	var groupName = req.body.groupName;
+	var optionName = req.body.optionName;
+
 	res.render('gamblingcreatebet', {givenTitle:'Place Bet', groupName:groupName, 
-		optionId:optionId, eventId:eventId, givenStyle:"../stylesheets/gamblinghome.css",
+		optionId:optionId, optionName: optionName, eventId:eventId, givenStyle:"../stylesheets/gamblinghome.css",
 			givenScript:"../javascripts/gamblinghome.js"})
 });
 
 router.post('/createbet',function(req,res){
 	var eventId= req.body.eventId,
 		optionId= req.body.optionId,
+		optionName= req.body.optionName,
 	    betterName= req.body.betterName,
 	    betterAmount= req.body.betterAmount,
 	    betterAddress = req.body.betterAddress,
 	    carrier = req.body.carrier;
-
+	var adr;
+	var amt;
+	if (betterAmount[0]!='$'){
+		amt = '$' + betterAmount;
+	}	
 	if (carrier=='AT&T'){
-		var adr = betterAddress + '@txt.att.net';
-		Group.addBet(eventId, optionId, betterName, betterAmount, adr, function(err){
-			if (err) throw (err);
-			res.redirect('/event/'+ eventId);
-		});
+		adr = betterAddress + '@txt.att.net';
 	}else if (carrier=='Sprint'){
-		var adr = betterAddress + '@messaging.sprintpcs.com';
-		Group.addBet(eventId, optionId, betterName, betterAmount, adr, function(err){
-			if (err) throw (err);
-			res.redirect('/event/'+ eventId);
-		});
+		adr = betterAddress + '@messaging.sprintpcs.com';
 	}else if (carrier=='T-Mobile'){
-		var adr = betterAddress + '@tmomail.net';
-		Group.addBet(eventId, optionId, betterName, betterAmount, adr, function(err){
-			if (err) throw (err);
-			res.redirect('/event/'+ eventId);
-		});
+		adr = betterAddress + '@tmomail.net';
 	}else if (carrier=='Verizon'){
-		var adr = betterAddress + '@vtext.com';
-		Group.addBet(eventId, optionId, betterName, betterAmount, adr, function(err){
-			if (err) throw (err);
-			res.redirect('/event/'+ eventId);
-		});
+		adr = betterAddress + '@vtext.com';
 	}else{
-		var adr = null;
-		Group.addBet(eventId, optionId, betterName, betterAmount, adr, function(err){
+		adr = null;
+	}
+	Group.addBet(eventId, optionId, optionName, betterName, amt, adr, function(err){
 			if (err) throw (err);
 			res.redirect('/event/'+ eventId);
-		});
-	}
+	});
 });
 
 router.post('/selectwinpage',function(req,res){
@@ -154,7 +144,7 @@ router.post('/eventPass',function(req,res){
 		opt2name= req.body.opt2name,
 		eventPassword= req.body.eventPassword;
 
-	Group.checkPassword(eventPassword, function(err, bool){
+	Group.checkPassword(eventId, eventPassword, function(err, bool){
 		if (err) throw (err);
 		if (bool){
 			res.render('gamblingselectwinner', {givenTitle:eventName, 
@@ -174,7 +164,14 @@ router.post('/eventPass',function(req,res){
 });
 
 router.post('/selectwin', function(req,res){
-	
+	var groupName=req.body.groupName,
+		eventId=req.body.eventId,
+		winOptId=req.body.winOptId,
+		loseOptId=req.body.loseOptId;
+	Group.declareWin(winOptId, loseOptId, function(err){
+		if (err) throw err;
+		res.redirect('/event/'+eventId);
+	});
 });
 
 module.exports = router;

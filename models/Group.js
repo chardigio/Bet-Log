@@ -1,6 +1,7 @@
 var db = require('../db');
-var async = require("async");
 var ObjectId = db.Schema.Types.ObjectId;
+var app = require('../app');
+var sendgrid = require('sendgrid')(process.env.SENDGRIDUSER, process.env.SENDGRIDPASS);
 
 /*
 var GroupSchemaOriginal = new db.Schema({
@@ -48,8 +49,7 @@ var EventSchema = new db.Schema({
 	eventPassword:String,
 	eventCreator:String,
 	options: [{identifier:String}],
-	messages: [{identifier:String}],
-	winner: String
+	messages: [{identifier:String}]
 });
 var MyEvent = db.mongoose.model('Event', EventSchema);
 
@@ -58,6 +58,7 @@ var OptionSchema = new db.Schema({
 	eventId:String,
 	eventName:String,
 	optionName:String,
+	winner: Boolean,
 	betters:[{identifier:String}],
 });
 var MyOption = db.mongoose.model('Option', OptionSchema);
@@ -65,9 +66,10 @@ var MyOption = db.mongoose.model('Option', OptionSchema);
 var BetterSchema = new db.Schema({
 	eventId:String,
 	optionId:String,
+	optionName:String,
 	betterName:String,
 	betterAddress:String,
-	betterAmount:Number
+	betterAmount:String
 });
 var MyBetter = db.mongoose.model('Better', BetterSchema);
 
@@ -94,23 +96,21 @@ exports.addGroup = function(groupName, callback){
 
 var optionNumber=0;
 var optionsInstance = [];
+var eventInstance = new MyEvent();
 exports.addEvent = function addEventFunction(groupName, eventName, eventPassword, eventCreator, options, callback){
-	if (optionNumber==0){
-		var eventInstance = new MyEvent();
-	}
-
 	optionsInstance[optionNumber] = new MyOption();
 	optionsInstance[optionNumber].optionName = options[optionNumber];
 	optionsInstance[optionNumber].eventId = eventInstance.id;
 	optionsInstance[optionNumber].groupName = groupName;
 	optionsInstance[optionNumber].betters = [];
+	optionsInstance[optionNumber].winner = false;
 	optionsInstance[optionNumber].save(function(err){
 		if (err){
 			console.err;
 		}
 		optionNumber++;
 		if (optionNumber<options.length){
-			addEventFunction(groupName, eventName, eventCreator, options, callback);
+			addEventFunction(groupName, eventName, eventPassword, eventCreator, options, callback);
 		}
 		if (optionNumber==options.length){
 			eventInstance.eventName = eventName;
@@ -133,7 +133,7 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventPassword
 						if (err){
 							console.err;
 						}else{
-							callback(null,eventInstance.id)
+							callback(null, eventInstance.id)
 						}
 				});
 				
@@ -147,7 +147,6 @@ exports.findGroupEvents = function(groupName, callback){
 		if (err){
 			callback(err);
 		}
-		console.log(group);
 		if (group.events.length==0){
 			callback(null,[],[],[],[],[]);
 		}
@@ -203,22 +202,17 @@ exports.findEvent = function(eventId, callback){
 		if (err){
 			callback(err);
 		}
-		console.log(event);
 		MyOption.find({eventId:eventId}).exec(function(err, options){
 			if (err){
 				callback(err);
 			}
-			console.log(options);
 			MyBetter.find({eventId:eventId}, function(err, bets){
 				if (err){
 					callback(err);
 				}
-				console.log(bets);
-				//console.log(event+'\n\n\n\n'+options+'\n\n\n\n\n'+bets);
 				if (bets==null){
 					callback(null, event, options, []);
 				}else{
-					console.log(bets);
 					callback(null, event, options, bets);
 				}
 			});
@@ -226,13 +220,14 @@ exports.findEvent = function(eventId, callback){
 	});
 }
 
-exports.addBet = function(eventId, optionId, name, amount, address, callback){
+exports.addBet = function(eventId, optionId, optionName, name, amount, address, callback){
 	var betInstance = MyBetter();
 	betInstance.betterName = name;
 	betInstance.betterAmount = amount;
 	betInstance.betterAddress = address;
 	betInstance.optionId = optionId;
 	betInstance.eventId = eventId;
+	betInstance.optionName = optionName;
 	betInstance.save(function(err){
 		if (err){
 			callback(err);
@@ -245,8 +240,6 @@ exports.addBet = function(eventId, optionId, name, amount, address, callback){
 				if (err){
 					callback(err);
 				}else{
-					console.log('betid' + betInstance.id);
-					console.log('optid' + optionId);
 					callback(null);
 				}
 		});
@@ -264,4 +257,40 @@ exports.checkPassword = function(eventId, eventPassword, callback){
 			callback(null, false)
 		}
 	});
+}
+
+exports.declareWin = function(winOptId, loseOptId, callback){
+	MyBetter.find({optionId:winOptId}, function(err, winningBets){
+		if (err){
+			callback(err);
+		}
+		var wineObject = new sendgrid.Email();
+		for (var i=0; i<winningBets.length; i++){
+			wineObject.to = winningBets[i].betterAddress;
+			wineObject.setFrom('Gambling4em');
+			wineObject.setSubject('Congrats');
+			wineObject.text = 'Congratulations! Your bet on ' + 
+				winningBets[i].optionName + " has won. Looks like you're up " +
+				winningBets[i].betterAmount + '.';
+			sendgrid.send(wineObject);
+		}
+
+		MyBetter.find({optionId:loseOptId}, function(err, losingBets){
+			if (err){
+				callback(err);
+			}
+			var loseeObject = new sendgrid.Email();
+			for (var i=0; i<losingBets.length; i++){
+				loseeObject.to = losingBets[i].betterAddress;
+				loseeObject.setFrom('Gambling4em');
+				loseeObject.setSubject('Sorry!');
+				loseeObject.text ='I regret to inform you that your bet on ' +
+					losingBets[i].optionName + " has lost. Looks like you're down " +
+					losingBets[i].betterAmount + '.';
+				sendgrid.send(loseeObject);
+			}
+			callback(null);
+		});
+	});
+	
 }
