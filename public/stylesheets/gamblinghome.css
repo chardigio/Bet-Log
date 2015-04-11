@@ -4,6 +4,7 @@ body{
 	background-position: center;
 	background-color: black;
 	font-family: 'Helvetica', 'MarkerFelt-Thin', 'Baskerville';
+	overflow: hidden;
 }
 
 .container-fluid{
