@@ -2,9 +2,8 @@ body{
 	background: url("/images/background.jpg");
 	background-size: 100%;
 	background-position: center;
-	background-color: black;
+	background-color: #AF7947;
 	font-family: 'Helvetica', 'MarkerFelt-Thin', 'Baskerville';
-	overflow: hidden;
 }
 
 .container-fluid{
