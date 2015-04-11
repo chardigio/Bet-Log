@@ -12,36 +12,30 @@ block content
 			br
 			br
 			.row
-				.col-xs-3
-				.col-xs-6.boxme(align='center')
+				.col-xs-2.col-md-4
+				.col-xs-8.col-md-4.boxme(align='center')
 					form(action="/createevent",method="post")
 						fieldset
 							br
-							.input-group
-								input.form-control(type="hidden", name='groupName', value=groupName)
+							input.form-control(type="hidden", name='groupName', value=groupName)
 							p Event Name
-							.input-group
-								input.form-control(type="text", name="eventName", placeholder="Event Name")
+							input.form-control(type="text", name="eventName", placeholder="Event Name")
 							br
 							br
 							p Event Creator
-							.input-group
-								input.form-control(type="text", name="eventCreator", placeholder="Event Creator")
+							input.form-control(type="text", name="eventCreator", placeholder="Event Creator")
 							br
 							br
 							p Event Password
-							.input-group
-								input.form-control(type="text", name="eventPassword", placeholder="Event Password")
+							input.form-control(type="text", name="eventPassword", placeholder="Event Password")
 							br
 							br
 							p Option 1
-							.input-group
-								input.form-control(type="text", name="option1", placeholder="Option 1")
+							input.form-control(type="text", name="option1", placeholder="Option 1")
 							br
 							br
 							p Option 2
-							.input-group
-								input.form-control(type="text", name="option2", placeholder="Option 2")
+							input.form-control(type="text", name="option2", placeholder="Option 2")
 							br
 							br
 							br

@@ -17,22 +17,19 @@ block content
 			br
 			br
 			.row
-				.col-xs-3
-				.col-xs-6(align='center')
+				.col-xs-2.col-sm-4
+				.col-xs-8.col-sm-4(align='center')
 					form(action='/eventPass', method='post')
 						fieldset
 							p Event Password
-							.input-group
-								input.form-control(type="text", name="eventPassword", placeholder="Event Password")
-								input(type="hidden", name='groupName', value=groupName)
-								input(type="hidden", name='eventId', value=eventId)
-								input(type="hidden", name='eventName', value=eventName)
-								input(type="hidden", name='eventCreator', value=eventCreator)
-								input(type="hidden", name='opt1id', value=opt1id)
-								input(type="hidden", name='opt2id', value=opt2id)
-								input(type="hidden", name='opt1name', value=opt1name)
-								input(type="hidden", name='opt2name', value=opt2name)
-								br
-								br
-								br
-								button.btn.btn-primary.btn-lg.btn-block(type="submit") Submit
+							input.form-control(type="text", name="eventPassword", placeholder="Event Password")
+							input(type="hidden", name='groupName', value=groupName)
+							input(type="hidden", name='eventId', value=eventId)
+							input(type="hidden", name='eventName', value=eventName)
+							input(type="hidden", name='eventCreator', value=eventCreator)
+							input(type="hidden", name='opt1id', value=opt1id)
+							input(type="hidden", name='opt2id', value=opt2id)
+							input(type="hidden", name='opt1name', value=opt1name)
+							input(type="hidden", name='opt2name', value=opt2name)
+							br
+							button.btn.btn-primary.btn-lg.btn-block(type="submit") Submit

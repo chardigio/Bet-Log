@@ -12,14 +12,12 @@ block content
 			br
 			br
 			.row
-				.col-xs-3
-				.col-xs-6.boxme(align='center')
+				.col-xs-2.col-sm-3
+				.col-xs-8.col-sm-6.boxme(align='center')
 					h3 Group Name
 					form(action='/creategroup', method='post')
-						.input-group
-							input.form-control(type="text", name="groupName", placeholder="Group Name")
+						input.form-control(type="text", name="groupName", placeholder="Group Name")
 						br
 						br
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Group
-				.col-xs-3
 			br

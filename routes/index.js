@@ -69,6 +69,7 @@ router.post('/createevent',function(req,res){
 	var eventPassword = req.body.eventPassword;
 	options[0] = req.body.option1;
 	options[1] = req.body.option2; //@add generality
+	console.log(options);
 	Group.addEvent(groupName, eventName, eventPassword, eventCreator, options, function(err, eventId){
 		if (err) throw (err);
 		res.redirect('/event/'+eventId)
@@ -109,6 +110,8 @@ router.post('/createbet',function(req,res){
 		adr = betterAddress + '@tmomail.net';
 	}else if (carrier=='Verizon'){
 		adr = betterAddress + '@vtext.com';
+	}else if (carrier=='Virgin Mobile'){
+		adr = betterAddress + '@vmobl.com';
 	}else{
 		adr = null;
 	}

@@ -76,3 +76,9 @@ img {
    	color: white;
    	text-decoration: none !important;
 }
+
+.accessgranted {
+	text-align: center;
+	color: gold;
+	font-family: 'Courier';
+}

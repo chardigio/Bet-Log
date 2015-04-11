@@ -23,33 +23,31 @@ block content
 							input(type="hidden", name='optionName', value=optionName)
 							br
 							p Name
-							.input-group
-								input.form-control(type="text", name="betterName", placeholder="Name")
+							input.form-control(type="text", name="betterName", placeholder="Name")
 							br
 							br
 							p Amount
-							.input-group
-								input.form-control(type="text", name="betterAmount", placeholder="Amount")
+							input.form-control(type="tel", name="betterAmount", placeholder="Amount")
 							br
 							br
 							p Phone Number
-							.input-group
-								input.form-control(type="text", name="betterAddress", placeholder="XXXXXXXXXX")
+							input.form-control(type="tel", name="betterAddress", placeholder="XXXXXXXXXX")
 							br
 							br
 							p Carrier
-							.input-group
-								select.form-control(id="carrierselect", name="carrier")
-									option 
-										a(href="#") AT&T
-									option 
-										a(href="#") Sprint
-									option 
-										a(href="#") T-Mobile
-									option
-										a(href="#") Verizon
-									option 
-										a(href="#") Not listed
+							select.form-control(id="carrierselect", name="carrier")
+								option 
+									a(href="#") AT&T
+								option 
+									a(href="#") Sprint
+								option 
+									a(href="#") T-Mobile
+								option
+									a(href="#") Verizon
+								option
+									a(href="#") Virgin Mobile
+								option 
+									a(href="#") Not listed
 							br
 							br
 							button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Bet

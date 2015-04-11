@@ -94,52 +94,52 @@ exports.addGroup = function(groupName, callback){
 	});
 }
 
-var optionNumber=0;
-var optionsInstance = [];
-var eventInstance = new MyEvent();
 exports.addEvent = function addEventFunction(groupName, eventName, eventPassword, eventCreator, options, callback){
-	optionsInstance[optionNumber] = new MyOption();
-	optionsInstance[optionNumber].optionName = options[optionNumber];
-	optionsInstance[optionNumber].eventId = eventInstance.id;
-	optionsInstance[optionNumber].groupName = groupName;
-	optionsInstance[optionNumber].betters = [];
-	optionsInstance[optionNumber].winner = false;
-	optionsInstance[optionNumber].save(function(err){
-		if (err){
-			console.err;
-		}
-		optionNumber++;
-		if (optionNumber<options.length){
-			addEventFunction(groupName, eventName, eventPassword, eventCreator, options, callback);
-		}
-		if (optionNumber==options.length){
-			eventInstance.eventName = eventName;
-			eventInstance.eventCreator = eventCreator;
-			eventInstance.groupName = groupName;
-			for (var i = 0; i<options.length; i++){
-				eventInstance.options[i]={identifier:optionsInstance[i].id};
-			}
-			eventInstance.messages = [];
-			eventInstance.eventPassword = eventPassword;
-			eventInstance.save(function(err){
+	var eventInstance = new MyEvent();
+	var optionsInstance = [];
+	for (var a=0; a<options.length; a++){
+		(function(a){
+			optionsInstance[a] = new MyOption();
+			optionsInstance[a].optionName = options[a];
+			optionsInstance[a].eventId = eventInstance.id;
+			optionsInstance[a].groupName = groupName;
+			optionsInstance[a].betters = [];
+			optionsInstance[a].winner = false;
+			optionsInstance[a].save(function(err){
 				if (err){
 					console.err;
 				}
-				MyGroup.update({groupName: groupName}, 
-					{$push: {'events': {
-								   identifier: eventInstance.id,
-							   } }
-					}, function(err,group){
+				if (a==options.length-1){
+					eventInstance.eventName = eventName;
+					eventInstance.eventCreator = eventCreator;
+					eventInstance.groupName = groupName;
+					for (var i = 0; i<options.length; i++){
+						eventInstance.options[i]={identifier:optionsInstance[i].id};
+					}
+					eventInstance.messages = [];
+					eventInstance.eventPassword = eventPassword;
+					eventInstance.save(function(err){
 						if (err){
 							console.err;
-						}else{
-							callback(null, eventInstance.id)
 						}
-				});
-				
+						MyGroup.update({groupName: groupName}, 
+							{$push: {'events': {
+										   identifier: eventInstance.id,
+									   } }
+							}, function(err,group){
+								if (err){
+									console.err;
+								}else{
+									optionNumber=0;
+									callback(null, eventInstance.id)
+								}
+						});
+						
+					});
+				}
 			});
-		}
-	});
+		})(a);
+	}
 }
 
 exports.findGroupEvents = function(groupName, callback){
