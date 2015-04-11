@@ -98,7 +98,9 @@ router.post('/createbet',function(req,res){
 	var amt;
 	if (betterAmount[0]!='$'){
 		amt = '$' + betterAmount;
-	}	
+	}else{
+		amt = betterAmount;
+	}
 	if (carrier=='AT&T'){
 		adr = betterAddress + '@txt.att.net';
 	}else if (carrier=='Sprint'){
