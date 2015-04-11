@@ -48,6 +48,7 @@ var EventSchema = new db.Schema({
 	groupName:String,
 	eventPassword:String,
 	eventCreator:String,
+	winner: Boolean,
 	options: [{identifier:String}],
 	messages: [{identifier:String}]
 });
@@ -58,7 +59,6 @@ var OptionSchema = new db.Schema({
 	eventId:String,
 	eventName:String,
 	optionName:String,
-	winner: Boolean,
 	betters:[{identifier:String}],
 });
 var MyOption = db.mongoose.model('Option', OptionSchema);
@@ -96,6 +96,7 @@ exports.addGroup = function(groupName, callback){
 
 exports.addEvent = function addEventFunction(groupName, eventName, eventPassword, eventCreator, options, callback){
 	var eventInstance = new MyEvent();
+	eventInstance.winner = false; //all events initialized as not yet having a winner
 	var optionsInstance = [];
 	for (var a=0; a<options.length; a++){
 		(function(a){
@@ -104,7 +105,6 @@ exports.addEvent = function addEventFunction(groupName, eventName, eventPassword
 			optionsInstance[a].eventId = eventInstance.id;
 			optionsInstance[a].groupName = groupName;
 			optionsInstance[a].betters = [];
-			optionsInstance[a].winner = false;
 			optionsInstance[a].save(function(err){
 				if (err){
 					console.err;
@@ -259,37 +259,40 @@ exports.checkPassword = function(eventId, eventPassword, callback){
 	});
 }
 
-exports.declareWin = function(winOptId, loseOptId, callback){
-	MyBetter.find({optionId:winOptId}, function(err, winningBets){
-		if (err){
-			callback(err);
-		}
-		var wineObject = new sendgrid.Email();
-		for (var i=0; i<winningBets.length; i++){
-			wineObject.to = winningBets[i].betterAddress;
-			wineObject.setFrom('Gambling4em');
-			wineObject.setSubject('Congrats');
-			wineObject.text = 'Congratulations! Your bet on ' + 
-				winningBets[i].optionName + " has won. Looks like you're up " +
-				winningBets[i].betterAmount + '.';
-			sendgrid.send(wineObject);
-		}
+exports.declareWin = function(eventId, winOptId, loseOptId, callback){
+	MyEvent.update({_id:eventId}, {winner:true}, function(err, event){
 
-		MyBetter.find({optionId:loseOptId}, function(err, losingBets){
+		MyBetter.find({optionId:winOptId}, function(err, winningBets){
 			if (err){
 				callback(err);
 			}
-			var loseeObject = new sendgrid.Email();
-			for (var i=0; i<losingBets.length; i++){
-				loseeObject.to = losingBets[i].betterAddress;
-				loseeObject.setFrom('Gambling4em');
-				loseeObject.setSubject('Sorry!');
-				loseeObject.text ='I regret to inform you that your bet on ' +
-					losingBets[i].optionName + " has lost. Looks like you're down " +
-					losingBets[i].betterAmount + '.';
-				sendgrid.send(loseeObject);
+			var wineObject = new sendgrid.Email();
+			for (var i=0; i<winningBets.length; i++){
+				wineObject.to = winningBets[i].betterAddress;
+				wineObject.setFrom('Gambling4em');
+				wineObject.setSubject('Congrats');
+				wineObject.text = 'Congratulations! Your bet on ' + 
+					winningBets[i].optionName + " has won. Looks like you're up " +
+					winningBets[i].betterAmount + '.';
+				sendgrid.send(wineObject);
 			}
-			callback(null);
+
+			MyBetter.find({optionId:loseOptId}, function(err, losingBets){
+				if (err){
+					callback(err);
+				}
+				var loseeObject = new sendgrid.Email();
+				for (var i=0; i<losingBets.length; i++){
+					loseeObject.to = losingBets[i].betterAddress;
+					loseeObject.setFrom('Gambling4em');
+					loseeObject.setSubject('Sorry!');
+					loseeObject.text ='I regret to inform you that your bet on ' +
+						losingBets[i].optionName + " has lost. Looks like you're down " +
+						losingBets[i].betterAmount + '.';
+					sendgrid.send(loseeObject);
+				}
+				callback(null);
+			});
 		});
 	});
 	

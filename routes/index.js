@@ -173,7 +173,7 @@ router.post('/selectwin', function(req,res){
 		eventId=req.body.eventId,
 		winOptId=req.body.winOptId,
 		loseOptId=req.body.loseOptId;
-	Group.declareWin(winOptId, loseOptId, function(err){
+	Group.declareWin(eventId, winOptId, loseOptId, function(err){
 		if (err) throw err;
 		res.redirect('/event/'+eventId);
 	});
