@@ -269,7 +269,7 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 			var wineObject = new sendgrid.Email();
 			for (var i=0; i<winningBets.length; i++){
 				wineObject.to = winningBets[i].betterAddress;
-				wineObject.setFrom('Gambling4em');
+				wineObject.setFrom('Bet Log');
 				wineObject.setSubject('Congrats');
 				wineObject.text = 'Congratulations! Your bet on ' + 
 					winningBets[i].optionName + " has won. Looks like you're up " +
@@ -284,7 +284,7 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 				var loseeObject = new sendgrid.Email();
 				for (var i=0; i<losingBets.length; i++){
 					loseeObject.to = losingBets[i].betterAddress;
-					loseeObject.setFrom('Gambling4em');
+					loseeObject.setFrom('Bet Log');
 					loseeObject.setSubject('Sorry!');
 					loseeObject.text ='I regret to inform you that your bet on ' +
 						losingBets[i].optionName + " has lost. Looks like you're down " +

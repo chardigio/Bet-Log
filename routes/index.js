@@ -4,7 +4,7 @@ var Group = require('../models/Group.js');
 
 //GET REQUESTS
 router.get('/', function(req, res){
-	res.render('gamblinghome',{givenTitle:"Gambling4em",
+	res.render('gamblinghome',{givenTitle:"Bet Log",
 		givenStyle:"../stylesheets/gamblinghome.css",
 		givenScript:"../javascripts/gamblinghome.js"});
 });
@@ -30,13 +30,13 @@ router.get('/event/:eventId',function(req,res){
 
 //POST REQUESTS
 router.post('/creategrouppage', function(req,res){
-	res.render('gamblingcreategroup', {givenTitle:"Gambling4em", 
+	res.render('gamblingcreategroup', {givenTitle:"Bet Log", 
 		givenStyle:"../stylesheets/gamblinghome.css",
 			givenScript:"../javascripts/gamblinghome.js"})
 });
 
 router.post('/joingrouppage', function(req,res){
-	res.render('gamblingjoingroup', {givenTitle:"Gambling4em", 
+	res.render('gamblingjoingroup', {givenTitle:"Bet Log", 
 		givenStyle:"../stylesheets/gamblinghome.css",
 			givenScript:"../javascripts/gamblinghome.js"})
 });
