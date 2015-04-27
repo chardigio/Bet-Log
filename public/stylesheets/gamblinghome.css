@@ -66,6 +66,36 @@ img {
    	text-decoration: none !important;
 }
 
+.bet:hover {
+	border: 5px solid white;
+	border-radius: 5px;
+	padding: 10px;
+	background: rgb(200, 54, 54); /* This is for ie8 and below */
+   	background: rgba(200, 54, 54, 0.5);
+   	color: white;   
+   	text-decoration: none !important;	
+}
+
+.winningbet {
+	background: rgb(100, 200, 30); /* This is for ie8 and below */
+   	background: rgba(100, 200, 30, 1);
+}
+
+.winningbet:hover {
+	background: rgb(100, 200, 30); /* This is for ie8 and below */
+   	background: rgba(100, 200, 30, 1);
+}
+
+.losingbet {
+	background: rgb(150, 30, 0); /* This is for ie8 and below */
+   	background: rgba(150, 30, 0, 1);
+}
+
+.losingbet:hover {
+	background: rgb(150, 30, 0); /* This is for ie8 and below */
+   	background: rgba(150, 30, 0, 1);
+}
+
 .titlebutton {
 	margin: auto;
 	border: 0px solid white;

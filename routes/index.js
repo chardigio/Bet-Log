@@ -97,7 +97,12 @@ router.post('/createbet',function(req,res){
 	    carrier = req.body.carrier;
 	var adr;
 	var amt;
-	if (betterAmount[0]!='$'){
+	if (betterAmount[0]!='$' && (betterAmount[0]=='0' || 
+		 betterAmount[0]=='1' || betterAmount[0]=='2' || 
+		 betterAmount[0]=='3' || betterAmount[0]=='4' || 
+		 betterAmount[0]=='5' || betterAmount[0]=='6' || 
+		 betterAmount[0]=='7' || betterAmount[0]=='8' || 
+		 betterAmount[0]=='9')){    //so ashamed of this
 		amt = '$' + betterAmount;
 	}else{
 		amt = betterAmount;
