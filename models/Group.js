@@ -267,7 +267,7 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 			callback(err);
 		}
 		var eventName = event.eventName;
-		MyBetter.update({optionId:winOptId}, {winner:2}, function(err, winningBets){
+		MyBetter.update({optionId:winOptId}, {winner:2}, {multi:true}, function(err, winningBets){
 			if (err){
 				callback(err);
 			}
@@ -282,7 +282,7 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 				sendgrid.send(wineObject);
 			}
 
-			MyBetter.update({optionId:loseOptId}, {winner:1}, function(err, losingBets){
+			MyBetter.update({optionId:loseOptId}, {winner:1}, {multi: true}, function(err, losingBets){
 				if (err){
 					callback(err);
 				}
