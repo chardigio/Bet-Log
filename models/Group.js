@@ -288,7 +288,7 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 				wineObject.to = winningBets[i].betterAddress;
 				wineObject.setFrom('BetLog.co');
 				wineObject.setSubject(eventName);
-				wineObject.text = 'Congratulations! Your bet on ' + 
+				wineObject.text = 'Congratulations ' + winningBets[i].betterName +'! Your bet on ' + 
 					winningBets[i].optionName + " has won. Looks like you're up " +
 					winningBets[i].betterAmount + '.';
 				sendgrid.send(wineObject);
@@ -309,7 +309,7 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 					loseeObject.to = losingBets[i].betterAddress;
 					loseeObject.setFrom('BetLog.co');
 					loseeObject.setSubject(eventName);
-					loseeObject.text ='I regret to inform you that your bet on ' +
+					loseeObject.text ='Sorry ' + losingBets[i].betterName +', I regret to inform you that your bet on ' +
 						losingBets[i].optionName + " has lost. Looks like you're down " +
 						losingBets[i].betterAmount + '.';
 					sendgrid.send(loseeObject);
