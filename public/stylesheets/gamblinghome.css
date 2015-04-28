@@ -92,8 +92,8 @@ img {
 }
 
 .losingbet:hover {
-	background: rgb(150, 30, 0); /* This is for ie8 and below */
-   	background: rgba(150, 30, 0, .6);
+	background: rgb(200, 30, 0); /* This is for ie8 and below */
+   	background: rgba(200, 30, 0, .6);
 }
 
 .completedevent {
