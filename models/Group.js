@@ -262,17 +262,29 @@ exports.checkPassword = function(eventId, eventPassword, callback){
 }
 
 exports.declareWin = function(eventId, winOptId, loseOptId, callback){
-	MyEvent.update({_id:eventId}, {complete:true}, function(err, event){
+	MyEvent.findOne({_id:eventId}, /*{complete:true},*/ function(err, event){
 		if (err){
 			callback(err);
 		}
+		event.complete = true;
+		event.save(function(err){
+			if (err){
+				callback(err);
+			}
+		});
 		var eventName = event.eventName;
-		MyBetter.update({optionId:winOptId}, {winner:2}, {multi:true}, function(err, winningBets){
+		MyBetter.find({optionId:winOptId}, /*{winner:2}, {multi:true},*/ function(err, winningBets){
 			if (err){
 				callback(err);
 			}
 			var wineObject = new sendgrid.Email();
 			for (var i=0; i<winningBets.length; i++){
+				winningBets[i].winner=2;
+				winningBets[i].save(function(err){
+					if (err){
+						callback(err);
+					}
+				});
 				wineObject.to = winningBets[i].betterAddress;
 				wineObject.setFrom('BetLog.co');
 				wineObject.setSubject(eventName);
@@ -282,12 +294,18 @@ exports.declareWin = function(eventId, winOptId, loseOptId, callback){
 				sendgrid.send(wineObject);
 			}
 
-			MyBetter.update({optionId:loseOptId}, {winner:1}, {multi: true}, function(err, losingBets){
+			MyBetter.find({optionId:loseOptId}, /*{winner:1}, {multi:true},*/ function(err, losingBets){
 				if (err){
 					callback(err);
 				}
 				var loseeObject = new sendgrid.Email();
 				for (var i=0; i<losingBets.length; i++){
+					losingBets[i].winner=1;
+					losingBets[i].save(function(err){
+						if (err){
+							callback(err);
+						}
+					});
 					loseeObject.to = losingBets[i].betterAddress;
 					loseeObject.setFrom('BetLog.co');
 					loseeObject.setSubject(eventName);
