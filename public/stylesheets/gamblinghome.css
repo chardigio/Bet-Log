@@ -96,6 +96,16 @@ img {
    	background: rgba(150, 30, 0, 1);
 }
 
+.completedevent {
+	background: rgb(120, 120, 120); /* This is for ie8 and below */
+   	background: rgba(120, 120, 120, .5);
+}
+
+.completedevent:hover{
+	background: rgb(79, 79, 79); /* This is for ie8 and below */
+   	background: rgba(79, 79, 79, .5);
+}
+
 .titlebutton {
 	margin: auto;
 	border: 0px solid white;

@@ -20,14 +20,37 @@ block content
 			br
 			br
 			.row
+				-var completeds = []
+				-var completedsIndex = []
 				each event, i in events
 					form(action='/event/#{event.id}', method='get')
+						if event.complete
+							- completeds.push(event);
+							- completedsIndex.push(i);
+						else
+							.col-xs-12.col-sm-6
+								button.btn.btn-primary.btn-lg.btn-block.boxed(align='center', type='submit')
+									h3=event.eventName
+									h6 Created by #{events[i].eventCreator}
+									h2=options[i][0].optionName
+									h4 vs.
+									h2=options[i][1].optionName
+									br
+								br
+				for event, index in completeds
+					form(action='/event/#{event.id}', method='get')
 						.col-xs-12.col-sm-6
-							button.btn.btn-primary.btn-lg.btn-block.boxed(align='center', type='submit')
+							button.btn.btn-primary.btn-lg.btn-block.boxed.completedevent(align='center', type='submit')
 								h3=event.eventName
-								h6 Created by #{events[i].eventCreator}
-								h2=options[i][0].optionName
+								h6 Created by #{event.eventCreator}
+								h2=options[completedsIndex[index]][0].optionName
 								h4 vs.
-								h2=options[i][1].optionName
-							br.col-md-hidden
-							br.bol-md-hidden
+								h2=options[completedsIndex[index]][1].optionName
+								br.col-md-hidden
+							br
+										
+
+
+
+
+
