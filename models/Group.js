@@ -8,26 +8,34 @@ var GroupSchemaOriginal = new db.Schema({
 	groupName : String,
     events : [ 
 		    {
-				eventName: String,
-				eventCreator: String,
-    			completed: Boolean,
+				eventName:String,
+				groupName:String,
+				eventPassword:String,
+				eventCreator:String,
+				complete: Boolean,
     			options:[
 				   {
-						optionName: String,
+						GroupName:String,
+						eventId:String,
+						eventName:String,
+						optionName:String,
 	    				betters: [
 							     {
-								  	betterName: String,
-	    							betterAddress: String,
-	    							betterAmount: Number
+								  	eventId:String,
+									optionId:String,
+									optionName:String,
+									betterName:String,
+									betterAddress:String,
+									betterAmount:String,
+									winner:Number
 							     }
-							 ],
-	  					winner: Boolean
+							 ]
 				    }
 				],
     			messages: [
 				      {
-						   messageFrom: String,
-						   messageText: String
+						   from: String,
+						   content: String
 			 	      }
 				  ]
 		    }
@@ -83,14 +91,38 @@ var MyMessage = db.mongoose.model('Message', MessageSchema);
 
 //functions
 exports.addGroup = function(groupName, callback){
-	var instance = new MyGroup();
-	instance.groupName = groupName;
-	instance.events = [];
-	instance.save(function (err) {
-		if (err) {
+	MyGroup.find({groupName:groupName}, function(err,groups){
+		if (err){
 			callback(err);
 		}else{
-			callback(null, instance);
+			if (groups.length==0){
+				var instance = new MyGroup();
+				instance.groupName = groupName;
+				instance.events = [];
+				instance.save(function (err) {
+					if (err) {
+						callback(err);
+					}else{
+						callback(null, instance);
+					}
+				});
+			}else{
+				callback(null,'found');
+			}
+		}
+	});
+}
+
+exports.findGroup = function(groupName, callback){
+	MyGroup.find({groupName:groupName}, function(err,groups){
+		if (err){
+			callback(err);
+		}else{
+			if (groups.length == 0){
+				callback(null,'notfound');
+			}else{
+				callback(null,'found');
+			}
 		}
 	});
 }
@@ -149,7 +181,7 @@ exports.findGroupEvents = function(groupName, callback){
 			callback(err);
 		}
 		if (group.events.length==0){
-			callback(null,[],[],[],[],[]);
+			callback(null,[],[]);
 		}
 		var eventIds = [];
 		for (var i=0; i<group.events.length; i++){
@@ -161,6 +193,7 @@ exports.findGroupEvents = function(groupName, callback){
 		var eventNumber=0;
 		var callReady = 0;
 		for (var a=0;a<eventIds.length;a++){
+			console.log(eventIds.length);
 			(function(a){
 				MyEvent.findById(eventIds[a], function(err, eventy){
 					if (err){

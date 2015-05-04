@@ -8,7 +8,7 @@ block content
 					h1#title Bet Log
 			form(action='/group/#{groupName}', method='get', align='center')
 				button.titlebutton
-					h3#subtitle=groupName
+					h2#subtitle=groupName
 			br
 			form(action='/event/#{eventId}', method='get', align='center')
 				button.titlebutton
@@ -20,14 +20,19 @@ block content
 			h3#subtitle Select a Winner:
 			br
 			br
+			-var names = []
+			- names.push(opt1name)
+			- names.push(opt2name)
+			- names.sort()
 			.row
-				.col-xs-6
-						form(action='/selectwin', method='post')
-							input(type="hidden", name='groupName', value=groupName)
-							input(type="hidden", name='eventId', value=eventId)
-							input(type="hidden", name='winOptId', value=opt1id)
-							input(type="hidden", name='loseOptId', value=opt2id)
-							button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt1name
+				if names[0]==opt1name
+					.col-xs-6
+							form(action='/selectwin', method='post')
+								input(type="hidden", name='groupName', value=groupName)
+								input(type="hidden", name='eventId', value=eventId)
+								input(type="hidden", name='winOptId', value=opt1id)
+								input(type="hidden", name='loseOptId', value=opt2id)
+								button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt1name
 				.col-xs-6
 						form(action='/selectwin', method='post')
 							input(type="hidden", name='groupName', value=groupName)
@@ -35,3 +40,15 @@ block content
 							input(type="hidden", name='winOptId', value=opt2id)
 							input(type="hidden", name='loseOptId', value=opt1id)
 							button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt2name
+				if names[0]==opt2name
+					.col-xs-6
+							form(action='/selectwin', method='post')
+								input(type="hidden", name='groupName', value=groupName)
+								input(type="hidden", name='eventId', value=eventId)
+								input(type="hidden", name='winOptId', value=opt1id)
+								input(type="hidden", name='loseOptId', value=opt2id)
+								button.btn.btn-primary.btn-lg.btn-block(type="submit")=opt1name
+			br
+			br
+			br
+			include questionfoot

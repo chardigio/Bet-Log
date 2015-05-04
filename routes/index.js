@@ -11,11 +11,21 @@ router.get('/', function(req, res){
 
 router.get('/group/:groupName',function(req,res){
 	var groupName = req.params.groupName;
-	Group.findGroupEvents(groupName, function(err, events, options){
+	Group.findGroup(groupName, function(err, result){
 		if (err) throw (err);
-		res.render('gamblinggroupfound', {givenTitle:groupName, 
-			givenStyle:"../stylesheets/gamblinghome.css",
-			givenScript:"../javascripts/gamblinghome.js", events:events, options:options});
+		if (result == 'found'){
+			console.log(result);
+			Group.findGroupEvents(groupName, function(err, events, options){
+				console.log(events);
+				res.render('gamblinggroupfound', {givenTitle:groupName, 
+					givenStyle:"../stylesheets/gamblinghome.css",
+					givenScript:"../javascripts/gamblinghome.js", events:events, options:options});
+			});
+		}else{
+			res.render('404', {givenTitle:"Bet Log", 
+				givenStyle:"../stylesheets/gamblinghome.css",
+				givenScript:"../javascripts/gamblinghome.js"})
+		}
 	});
 });
 
@@ -26,6 +36,36 @@ router.get('/event/:eventId',function(req,res){
 			 options:options, bets:bets, givenStyle:"../stylesheets/gamblinghome.css",
 			givenScript:"../javascripts/gamblinghome.js"});
 	});
+});
+
+router.get('/creategrouppage', function(req,res){
+	res.render('gamblingcreategroup', {givenTitle:"Bet Log", 
+		givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"})
+});
+
+router.get('/creategroupnametaken', function(req,res){
+	res.render('gamblinggroupnametaken', {givenTitle:"Bet Log", 
+		givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"})
+});
+
+router.get('/groupnotfound', function(req,res){
+	res.render('gamblinggroupnotfound', {givenTitle:"Bet Log", 
+		givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"})
+});
+
+router.get('/joingrouppage', function(req,res){
+	res.render('gamblingjoingroup', {givenTitle:"Bet Log", 
+		givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"})
+});
+
+router.get('/homeinstructions', function(req,res){
+	res.render('homeinstructions', {givenTitle:"Bet Log", 
+		givenStyle:"../stylesheets/gamblinghome.css",
+			givenScript:"../javascripts/gamblinghome.js"})
 });
 
 //POST REQUESTS
@@ -45,13 +85,23 @@ router.post('/creategroup', function(req, res){
 	var groupName = req.body.groupName;
 	Group.addGroup(groupName, function(err,group){
 		if (err) throw (err);
-		res.redirect('/group/'+groupName);
+		if (group=='found'){
+			res.redirect('/creategroupnametaken')
+		}else{
+			res.redirect('/group/'+groupName);
+		}
 	});
 });
 
 router.post('/joingroup', function(req,res){
 	var groupName = req.body.groupName;
-	res.redirect('/group/'+groupName);
+	Group.findGroup(groupName, function(err, result){
+		if (result == 'notfound'){
+			res.redirect('/groupnotfound');
+		}else if (result == 'found'){
+			res.redirect('/group/'+groupName);
+		}
+	});
 });
 
 router.post('/createeventpage', function(req, res){

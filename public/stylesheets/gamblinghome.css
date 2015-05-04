@@ -122,3 +122,32 @@ img {
 	color: gold;
 	font-family: 'Courier';
 }
+
+.groupnametaken {
+	text-align: center;
+	font-size: 15px;
+	color: white;
+}
+
+.whitelink, .whitelink:hover{
+	color:white;
+}
+
+.questionmark {
+	background: rgb(100, 200, 30); /* This is for ie8 and below */
+   	background: rgba(100, 200, 30, .6);
+   	border-radius: 50%;
+   	color:white;
+}
+
+.questionmark:hover{
+	background: rgb(100, 150, 30); /* This is for ie8 and below */
+   	background: rgba(100, 150, 30, .6);
+   	color:white;
+}
+
+.qmarktext, .qmarktext:hover{
+	color:white;
+	text-decoration: none !important;	
+}
+

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+	.container-fluid
+		.jumbotron
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Bet Log
+			h3#subtitle Place your bets!
+			br
+			br
+			br
+			br
+			br
+			br
+			.row
+				.col-xs-1
+				.col-xs-10
+					.button.btn-block.boxed.bet.losingbet
+						.groupnametaken Oh no! The page you were looking for
+						.groupnametaken could not be found.
+			br
+			include questionfoot

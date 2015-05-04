@@ -11,9 +11,11 @@ block content
 			br
 			br
 			br
+			p The Group Name you entered is in use.
+			p Try again to create a unique Group Name.
 			.row
-				.col-xs-2.col-sm-4
-				.col-xs-8.col-sm-4.boxme(align='center')
+				.col-xs-2.col-sm-3
+				.col-xs-8.col-sm-6.boxme(align='center')
 					h3 Group Name
 					form(action='/creategroup', method='post')
 						input.form-control(type="text", name="groupName", placeholder="Group Name")
@@ -21,4 +23,3 @@ block content
 						br
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Group
 			br
-			include questionfoot

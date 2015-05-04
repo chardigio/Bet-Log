@@ -12,8 +12,8 @@ block content
 			br
 			br
 			.row
-				.col-xs-3
-				.col-xs-6.boxme(align='center')
+				.col-xs-2.col-sm-4
+				.col-xs-8.col-sm-4.boxme(align='center')
 					h3 Group Name
 					form(action='/joingroup', method='post')
 						input.form-control(type="text", name="groupName", placeholder="Group Name")
@@ -22,3 +22,4 @@ block content
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Join Group
 				.col-xs-3
 			br
+			include questionfoot

@@ -8,15 +8,26 @@ block content
 					h1#title Bet Log
 			form(action='/group/#{event.groupName}', method='get', align='center')
 				button.titlebutton
-					h3#subtitle=event.groupName
+					h2#subtitle=event.groupName
 			br
 			form(action='/event/#{event.id}', method='get', align='center')
 				button.titlebutton
-					h2#subtitle=event.eventName
+					h1#subtitle=event.eventName
 			h5#subtitle Created by #{event.eventCreator}
 			br
 			.row
+				- var optionNameArr = []
+				- var optionArr = []
 				each option in options
+					- optionNameArr.push(option.optionName)
+				- optionNameArr.sort()
+				if options[0].optionName==optionNameArr[0]
+					- optionArr[0] = options[0]
+					- optionArr[1] = options[1]
+				else
+					- optionArr[0] = options[1]
+					- optionArr[1] = options[0]
+				each option in optionArr
 					.col-xs-6
 						h3(align='center')=option.optionName
 						br
@@ -76,12 +87,9 @@ block content
 					.col-xs-2.col-sm-3
 					.col-xs-8.col-sm-6
 						h4(align='center') Winner has been selected
-
-
 			br
 			br
-			br
-			br
+			include questionfoot
 
 
 

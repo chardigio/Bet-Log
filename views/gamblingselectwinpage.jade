@@ -8,7 +8,7 @@ block content
 					h1#title Bet Log
 			form(action='/group/#{groupName}', method='get', align='center')
 				button.titlebutton
-					h3#subtitle=groupName
+					h2#subtitle=groupName
 			br
 			form(action='/event/#{eventId}', method='get', align='center')
 				button.titlebutton
@@ -33,3 +33,7 @@ block content
 							input(type="hidden", name='opt2name', value=opt2name)
 							br
 							button.btn.btn-primary.btn-lg.btn-block(type="submit") Submit
+			br
+			br
+			br
+			include questionfoot

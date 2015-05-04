@@ -1,0 +1,43 @@
+extends layout
+
+block content
+	.contatiner-fluid
+		.jumbotron
+			form(action='/', method='get', align='center')
+				button.titlebutton
+					h1#title Bet Log
+			h3#subtitle Place your bets!
+			br
+			br
+			.row
+				.col-xs-1
+				.col-xs-10
+					button.btn-block.boxed.bet.instructions(disabled)
+						h2 About
+						br
+						ul.instructiontext(align='left') 
+							li Bet Log is a new way to keep track of bets with your friends.
+							br
+							li Create groups or join groups. Groups become central hubs where you can see the events that are being bet on in your group.
+							br
+							li To create an event, you must enter the details of the event along with an event password. This password will be used later to select a winner for the event.
+							br
+							li By selecting an event, you can see who has bet on what option and for how much.
+							br
+							li You can create bets by entering your name, wager, and cellphone number (optional, for text message alerts).
+							br
+							li If you’re the one who created the event, you can select a winner using the event password.
+							br
+							li Once a winner is chosen, text messages are sent to all eligible betters specifying the amount of money they’ve won or lost.
+							br
+			br
+			br
+			br
+			footer(align='center') Bet Log was created by 
+				a.whitelink(href="https://github.com/cd17822", target="_blank") Charlie DiGiovanna
+				, inspired in part by 
+				a.whitelink(href="https://twitter.com/MarkGiardini", target="_blank") Mark Giardini
+				|  & 
+				a.whitelink(href="https://twitter.com/mike_rotenberg", target="_blank") Mike Rotenberg
+				| .
+			br

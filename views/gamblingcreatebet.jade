@@ -8,49 +8,50 @@ block content
 					h1#title Bet Log
 			form(action='/group/#{groupName}', method='get', align='center')
 				button.titlebutton
-					h4#subtitle=groupName
+					h2#subtitle=groupName
 			h3#subtitle=optionName
 			br
 			br
 			.row
 				.col-xs-3
 				.col-xs-6.boxme(align='center')
-					form(action="/createbet", method="post")
-						fieldset
-							input(type="hidden", name='groupName', value=groupName)
-							input(type="hidden", name='eventId', value=eventId)
-							input(type="hidden", name='optionId', value=optionId)
-							input(type="hidden", name='optionName', value=optionName)
-							br
-							p Name
-							input.form-control(type="text", name="betterName", placeholder="Name")
-							br
-							br
-							p Amount
-							input.form-control(type="tel", name="betterAmount", placeholder="Amount")
-							br
-							br
-							p Phone Number
-							input.form-control(type="tel", name="betterAddress", placeholder="XXXXXXXXXX")
-							br
-							br
-							p Carrier
-							select.form-control(id="carrierselect", name="carrier")
-								option 
-									a(href="#") AT&T
-								option 
-									a(href="#") Sprint
-								option 
-									a(href="#") T-Mobile
-								option
-									a(href="#") Verizon
-								option
-									a(href="#") Virgin Mobile
-								option 
-									a(href="#") Not listed
-							br
-							br
-							button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Bet
-			br
-			br
-			br
+					form(action="/createbet", method="post", data-toggle="validator", role="form")
+						input(type="hidden", name='groupName', value=groupName)
+						input(type="hidden", name='eventId', value=eventId)
+						input(type="hidden", name='optionId', value=optionId)
+						input(type="hidden", name='optionName', value=optionName)
+						br
+						p Name
+						input.form-control(type="text", name="betterName", placeholder="Name")
+						br
+						br
+						p Wager
+						input.form-control(type="tel", name="betterAmount", placeholder="Wager")
+						br
+						br
+						p Phone Number
+						input.form-control(type="tel", name="betterAddress", placeholder="XXXXXXXXXX")
+						br
+						br
+						p Carrier
+						select.form-control(id="carrierselect", name="carrier")
+							option 
+								a(href="#") AT&T
+							option 
+								a(href="#") Sprint
+							option 
+								a(href="#") T-Mobile
+							option
+								a(href="#") Verizon
+							option
+								a(href="#") Virgin Mobile
+							option 
+								a(href="#") Not listed
+						br
+						br
+						button.btn.btn-primary.btn-lg.btn-block(type="submit") Create Bet
+		br
+		br
+		br
+		br
+		include questionfoot

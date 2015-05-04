@@ -8,7 +8,7 @@ block content
 					h1#title Bet Log
 			form(action='/group/#{givenTitle}', method='get', align='center')
 				button.titlebutton
-					h4#subtitle=givenTitle
+					h2#subtitle=givenTitle
 			br
 			.row
 				.col-xs-2.col-sm-4
@@ -48,6 +48,7 @@ block content
 								h2=options[completedsIndex[index]][1].optionName
 								br.col-md-hidden
 							br
+			include questionfoot
 										
 
 
