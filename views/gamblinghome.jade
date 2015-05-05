@@ -3,9 +3,7 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			form(action='/', method='get', align='center')
-				button.titlebutton
-					h1#title Bet Log
+			include logo
 			h3#subtitle Place your bets!
 			br
 			br
@@ -24,7 +22,6 @@ block content
 				.col-xs-8.col-sm-6
 					form(action='/joingrouppage', method='post')
 						button.btn.btn-primary.btn-lg.btn-block(type="submit") Join Group
-			br
 			br
 			br
 			br

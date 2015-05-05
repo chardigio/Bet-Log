@@ -3,13 +3,11 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			form(action='/', method='get', align='center')
-				button.titlebutton
-					h1#title Bet Log
+			include logosmall
+			br
 			form(action='/group/#{groupName}', method='get', align='center')
 				button.titlebutton
 					h2#subtitle=groupName
-			br
 			br
 			.row
 				.col-xs-2.col-md-4

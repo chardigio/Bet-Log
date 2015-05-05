@@ -3,9 +3,7 @@ extends layout
 block content
 	.container-fluid
 		.jumbotron
-			form(action='/', method='get', align='center')
-				button.titlebutton
-					h1#title Bet Log
+			include logosmall
 			form(action='/group/#{givenTitle}', method='get', align='center')
 				button.titlebutton
 					h2#subtitle=givenTitle
