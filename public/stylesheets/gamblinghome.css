@@ -87,13 +87,13 @@ img {
 }
 
 .losingbet {
-	background: rgb(200, 30, 0); /* This is for ie8 and below */
-   	background: rgba(200, 30, 0, .6);
+	background: rgb(250, 30, 0); /* This is for ie8 and below */
+   	background: rgba(250, 30, 0, .6);
 }
 
 .losingbet:hover {
-	background: rgb(200, 30, 0); /* This is for ie8 and below */
-   	background: rgba(200, 30, 0, .6);
+	background: rgb(250, 30, 0); /* This is for ie8 and below */
+   	background: rgba(250, 30, 0, .6);
 }
 
 .completedevent {

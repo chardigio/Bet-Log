@@ -185,7 +185,6 @@ router.post('/selectwinpage',function(req,res){
 		opt2id= req.body.opt2id,
 		opt1name= req.body.opt1name,
 		opt2name= req.body.opt2name;
-
 	res.render('gamblingselectwinpage', {givenTitle:eventName, 
 		givenStyle:"../stylesheets/gamblinghome.css", 
 		givenScript:"../javascripts/gamblinggroup.js", groupName:groupName, 
@@ -231,6 +230,56 @@ router.post('/selectwin', function(req,res){
 	Group.declareWin(eventId, winOptId, loseOptId, function(err){
 		if (err) throw err;
 		res.redirect('/event/'+eventId);
+	});
+});
+
+router.post('/createbetmatchpage', function(req,res){
+	var eventId = req.body.eventId,
+		optionId = req.body.optionId,
+		option2Id = req.body.option2Id,
+		option2Name = req.body.option2Name,
+		optionName = req.body.optionName,
+		betId = req.body.betId;
+		betterName = req.body.name,
+		betterAmount = req.body.amount,
+		betterAddress = req.body.address,
+		groupName = req.body.groupName;
+	res.render('gamblingmatchbet', {givenTitle: 'Match Bet', 
+		givenStyle:"../stylesheets/gamblinghome.css", 
+		givenScript:"../javascripts/gamblinggroup.js", groupName:groupName,
+		eventId:eventId, matchName:betterName,
+		optionId:optionId, optionName:optionName, betterName:betterName,
+		betterAmount:betterAmount, betterAddress:betterAddress, 
+		option2Name:option2Name, option2Id:option2Id, matchId:betId});
+});
+
+router.post('/createbetmatch', function(req, res){
+	var eventId= req.body.eventId,
+		optionId= req.body.optionId,
+		matchId= req.body.matchId,
+		matchName= req.body.matchName,
+		optionName= req.body.optionName,
+	    betterName= req.body.betterName,
+	    betterAmount= req.body.betterAmount,
+	    betterAddress = req.body.betterAddress,
+	    carrier = req.body.carrier;
+	var adr;
+	if (carrier=='AT&T'){
+		adr = betterAddress + '@txt.att.net';
+	}else if (carrier=='Sprint'){
+		adr = betterAddress + '@messaging.sprintpcs.com';
+	}else if (carrier=='T-Mobile'){
+		adr = betterAddress + '@tmomail.net';
+	}else if (carrier=='Verizon'){
+		adr = betterAddress + '@vtext.com';
+	}else if (carrier=='Virgin Mobile'){
+		adr = betterAddress + '@vmobl.com';
+	}else{
+		adr = null;
+	}
+	Group.addBetMatch(eventId, optionId, matchId, matchName, optionName, betterName, betterAmount, adr, function(err){
+			if (err) throw (err);
+			res.redirect('/event/'+ eventId);
 	});
 });
 

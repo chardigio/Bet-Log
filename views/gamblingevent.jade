@@ -44,23 +44,39 @@ block content
 						each bet in bets
 							if bet.optionId==option.id
 								-betsInOption++
-								if bet.winner == 2
-									button.btn-block.bet.boxed.winningbet
+								if bet.winner == 2 || (bet.matchId!=null && bet.winner==0)
+									button.btn-block.bet.boxed.winningbet(disabled)
 										br
 										p(align='center') #{bet.betterName}
 										p(align='center') #{bet.betterAmount}
 								else if bet.winner == 1
-									button.btn-block.boxed.bet.losingbet
+									button.btn-block.boxed.bet.losingbet(disabled)
 										br
 										p(align='center') #{bet.betterName}
 										p(align='center') #{bet.betterAmount}
 								else if bet.winner == 0
-									button.btn-block.boxed.bet
-										br
-										p(align='center') #{bet.betterName}
-										p(align='center') #{bet.betterAmount}
+									form(action='/createbetmatchpage', method='post')
+										input(type="hidden", name='groupName', value=event.groupName)
+										input(type="hidden", name='eventId', value=event.id)
+										input(type="hidden", name='optionId', value=option.id)
+										if option.optionName==optionArr[0].optionName
+											input(type="hidden", name='option2Name', value=optionArr[1].optionName)
+											input(type="hidden", name='option2Id', value=optionArr[1].id)
+										else
+											input(type="hidden", name='option2Name', value=optionArr[0].optionName)
+											input(type="hidden", name='option2Id', value=optionArr[0].id)
+										input(type="hidden", name='optionName', value=option.optionName)
+										input(type="hidden", name='betId', value=bet.id)
+										input(type="hidden", name='name', value=bet.betterName)
+										input(type="hidden", name='amount', value=bet.betterAmount)
+										input(type="hidden", name='address', value=bet.betterAddress)
+										button.btn-block.boxed.bet(type="submit")
+											br
+											p(align='center') #{bet.betterName}
+											p(align='center') #{bet.betterAmount}
+								br
 						if betsInOption==0
-							button.btn-block.boxed.bet(align='center')
+							button.btn-block.boxed.bet(align='center', disabled)
 								br
 								p No bets
 								p in place

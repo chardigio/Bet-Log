@@ -9,24 +9,34 @@ block content
 			form(action='/group/#{groupName}', method='get', align='center')
 				button.titlebutton
 					h2#subtitle=groupName
-			h3#subtitle=optionName
+			br
+			br
+			.row
+				.col-xs-1
+				.col-xs-10
+					.button.btn-block.boxed.bet.losingbet
+						.groupnametaken You're matching a bet by #{betterName} on #{optionName}.
+						.groupnametaken Fill out the information below to place #{betterAmount} on #{option2Name}.
 			br
 			br
 			.row
 				.col-xs-3
 				.col-xs-6.boxme(align='center')
-					form(action="/createbet", method="post", data-toggle="validator", role="form")
+					form(action="/createbetmatch", method="post", data-toggle="validator", role="form")
 						input(type="hidden", name='groupName', value=groupName)
 						input(type="hidden", name='eventId', value=eventId)
-						input(type="hidden", name='optionId', value=optionId)
-						input(type="hidden", name='optionName', value=optionName)
+						input(type="hidden", name='optionId', value=option2Id)
+						input(type="hidden", name='optionName', value=option2Name)
+						input(type="hidden", name='matchId', value=matchId)
+						input(type="hidden", name='matchName', value=matchName)
 						br
 						p Name
 						input.form-control(type="text", name="betterName", placeholder="Name")
 						br
 						br
 						p Wager
-						input.form-control(type="tel", name="betterAmount", placeholder="Wager")
+						input(type="hidden", name='betterAmount', value=betterAmount)
+						h2.btn-block.bet.boxed.winningbet=betterAmount
 						br
 						br
 						p Phone Number
