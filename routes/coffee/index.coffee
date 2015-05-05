@@ -16,9 +16,7 @@ router.get '/group/:groupName', (req, res) ->
 		if err
 			throw err
 		if result == 'found'
-			console.log result
 			Group.findGroupEvents groupName, (err, events, options) ->
-				console.log events
 				res.render 'gamblinggroupfound',
 					givenTitle: groupName
 					givenStyle: '../stylesheets/gamblinghome.css'
@@ -135,8 +133,6 @@ router.post '/createevent', (req, res) ->
 	eventPassword = req.body.eventPassword
 	options[0] = req.body.option1
 	options[1] = req.body.option2
-	#@add generality
-	console.log options
 	Group.addEvent groupName, eventName, eventPassword, eventCreator, options, (err, eventId) ->
 		if err
 			throw err

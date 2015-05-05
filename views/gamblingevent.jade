@@ -44,16 +44,21 @@ block content
 						each bet in bets
 							if bet.optionId==option.id
 								-betsInOption++
-								if bet.winner == 2 || (bet.matchId!=null && bet.winner==0)
+								if (bet.winner == 2 && bet.matchId!=null) || (bet.matchId!=null && bet.winner==0)
 									button.btn-block.bet.boxed.winningbet(disabled)
 										br
 										p(align='center') #{bet.betterName}
 										p(align='center') #{bet.betterAmount}
-								else if bet.winner == 1
+								else if bet.winner == 1 && bet.matchId!=null
 									button.btn-block.boxed.bet.losingbet(disabled)
 										br
 										p(align='center') #{bet.betterName}
 										p(align='center') #{bet.betterAmount}
+								else if bet.winner > 0 && bet.matchId==null
+										button.btn-block.boxed.bet(type="submit", disabled)
+											br
+											p(align='center') #{bet.betterName}
+											p(align='center') #{bet.betterAmount}
 								else if bet.winner == 0
 									form(action='/createbetmatchpage', method='post')
 										input(type="hidden", name='groupName', value=event.groupName)

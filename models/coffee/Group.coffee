@@ -192,6 +192,7 @@ exports.findGroupEvents = (groupName, callback) ->
 						i++
 					thisEventOptions = []
 					pushReady = 0
+					b = 0
 					while b < thisEventOptIds.length
 						do (b) ->
 							MyOption.findById thisEventOptIds[b], (err, opt) ->

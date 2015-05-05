@@ -245,7 +245,7 @@ exports.findGroupEvents = function(groupName, callback) {
       (function(a) {
         MyEvent.findById(eventIds[a], function(err, eventy) {
           var i;
-          var pushReady, thisEventOptIds, thisEventOptions;
+          var b, pushReady, thisEventOptIds, thisEventOptions;
           if (err) {
             callback(err);
           }
@@ -261,6 +261,7 @@ exports.findGroupEvents = function(groupName, callback) {
           }
           thisEventOptions = [];
           pushReady = 0;
+          b = 0;
           while (b < thisEventOptIds.length) {
             (function(b) {
               MyOption.findById(thisEventOptIds[b], function(err, opt) {

@@ -246,7 +246,7 @@
         (function(a) {
           MyEvent.findById(eventIds[a], function(err, eventy) {
             var i;
-            var pushReady, thisEventOptIds, thisEventOptions;
+            var b, pushReady, thisEventOptIds, thisEventOptions;
             if (err) {
               callback(err);
             }
@@ -262,6 +262,7 @@
             }
             thisEventOptions = [];
             pushReady = 0;
+            b = 0;
             while (b < thisEventOptIds.length) {
               (function(b) {
                 MyOption.findById(thisEventOptIds[b], function(err, opt) {
