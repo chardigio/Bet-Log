@@ -201,7 +201,9 @@ router.post('/createbet', function(req, res) {
   } else {
     amt = betterAmount;
   }
-  if (carrier === 'AT&T') {
+  if (betterAddress.length < 10 || parseInt(betterAddress) === NaN) {
+    adr = null;
+  } else if (carrier === 'AT&T') {
     adr = betterAddress + '@txt.att.net';
   } else if (carrier === 'Sprint') {
     adr = betterAddress + '@messaging.sprintpcs.com';

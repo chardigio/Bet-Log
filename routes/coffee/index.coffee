@@ -166,11 +166,13 @@ router.post '/createbet', (req, res) ->
 	adr = undefined
 	amt = undefined
 	if betterAmount[0] != '$' and (betterAmount[0] == '0' or betterAmount[0] == '1' or betterAmount[0] == '2' or betterAmount[0] == '3' or betterAmount[0] == '4' or betterAmount[0] == '5' or betterAmount[0] == '6' or betterAmount[0] == '7' or betterAmount[0] == '8' or betterAmount[0] == '9')
-		#so ashamed of this
+		#so ashamed of this^
 		amt = '$' + betterAmount
 	else
 		amt = betterAmount
-	if carrier == 'AT&T'
+	if betterAddress.length < 10 || parseInt(betterAddress) == NaN
+		adr = null
+	else if carrier == 'AT&T'
 		adr = betterAddress + '@txt.att.net'
 	else if carrier == 'Sprint'
 		adr = betterAddress + '@messaging.sprintpcs.com'
