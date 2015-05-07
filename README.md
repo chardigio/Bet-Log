@@ -13,3 +13,4 @@ For more information on how Bet Log works visit www.betlog.co/about.
 <li>Express
 <li>MongoDB
 <li>Jade/CSS
+<li>Bootstrap
