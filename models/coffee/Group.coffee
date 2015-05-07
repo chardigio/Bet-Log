@@ -3,9 +3,6 @@ ObjectId = db.Schema.Types.ObjectId
 app = require('../app')
 sendgrid = require('sendgrid')(process.env.SENDGRIDUSER, process.env.SENDGRIDPASS)
 
-#GLOBAL FUNCTIONS
-sendMail = () ->
-
 ###
 var GroupSchemaOriginal = new db.Schema({
 	groupName : String,
