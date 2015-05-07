@@ -72,7 +72,7 @@ router.get '/joingrouppage', (req, res) ->
 		givenTitle: 'Bet Log'
 	return
 
-router.get '/homeinstructions', (req, res) ->
+router.get '/about', (req, res) ->
 	res.render 'homeinstructions',
 		givenTitle: 'Bet Log'
 	return

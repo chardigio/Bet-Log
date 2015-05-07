@@ -90,7 +90,7 @@
     });
   });
 
-  router.get('/homeinstructions', function(req, res) {
+  router.get('/about', function(req, res) {
     res.render('homeinstructions', {
       givenTitle: 'Bet Log'
     });
