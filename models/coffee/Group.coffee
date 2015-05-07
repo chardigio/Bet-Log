@@ -171,8 +171,7 @@ exports.findGroupEvents = (groupName, callback) ->
 			i++
 		events = []
 		optionIds = []
-		options = []
-		#to be double array
+		options = [] #to be double array
 		eventNumber = 0
 		callReady = 0
 		a = 0
