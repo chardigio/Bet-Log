@@ -3,6 +3,9 @@ ObjectId = db.Schema.Types.ObjectId
 app = require('../app')
 sendgrid = require('sendgrid')(process.env.SENDGRIDUSER, process.env.SENDGRIDPASS)
 
+#GLOBAL FUNCTIONS
+sendMail = () ->
+
 ###
 var GroupSchemaOriginal = new db.Schema({
 	groupName : String,
@@ -341,7 +344,6 @@ exports.declareWin = (eventId, winOptId, loseOptId, callback) ->
 				sendgrid.send wineObject
 				i++
 			MyBetter.find { optionId: loseOptId }, (err, losingBets) ->
-				`var i`
 				if err
 					callback err
 				loseeObject = new (sendgrid.Email)

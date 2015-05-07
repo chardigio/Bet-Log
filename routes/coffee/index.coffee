@@ -2,13 +2,23 @@ express = require('express')
 router = express.Router()
 Group = require('../models/Group.js')
 
+#GLOBAL FUNCTIONS
+render404 = (res) ->
+    res.render '404',
+        givenTitle: 'BetLog'
+    return
+
 #GET REQUESTS
 router.get '/', (req, res) ->
-	res.render 'gamblinghome',
+	res.render 'home',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
+
+router.get '/group/', (req, res) ->
+	render404(res)
+
+router.get '/event/', (req, res) ->
+	render404(res)
 
 router.get '/group/:groupName', (req, res) ->
 	groupName = req.params.groupName
@@ -17,82 +27,65 @@ router.get '/group/:groupName', (req, res) ->
 			throw err
 		if result == 'found'
 			Group.findGroupEvents groupName, (err, events, options) ->
-				res.render 'gamblinggroupfound',
+				res.render 'groupfound',
 					givenTitle: groupName
-					givenStyle: '../stylesheets/gamblinghome.css'
-					givenScript: '../javascripts/gamblinghome.js'
 					events: events
 					options: options
 				return
 		else
-			res.render '404',
-				givenTitle: 'Bet Log'
-				givenStyle: '../stylesheets/gamblinghome.css'
-				givenScript: '../javascripts/gamblinghome.js'
+			render404(res)
 		return
 	return
 
 router.get '/event/:eventId', (req, res) ->
 	eventId = req.params.eventId
 	Group.findEvent eventId, (err, eventy, options, bets) ->
-		res.render 'gamblingevent',
-			givenTitle: eventy.eventName
-			event: eventy
-			options: options
-			bets: bets
-			givenStyle: '../stylesheets/gamblinghome.css'
-			givenScript: '../javascripts/gamblinghome.js'
-		return
+		if eventy == undefined
+			render404(res)
+			return
+		else
+			res.render 'event',
+				givenTitle: eventy.eventName
+				event: eventy
+				options: options
+				bets: bets
+			return
 	return
 
 router.get '/creategrouppage', (req, res) ->
-	res.render 'gamblingcreategroup',
+	res.render 'creategroup',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.get '/creategroupnametaken', (req, res) ->
-	res.render 'gamblinggroupnametaken',
+	res.render 'groupnametaken',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.get '/groupnotfound', (req, res) ->
-	res.render 'gamblinggroupnotfound',
+	res.render 'groupnotfound',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.get '/joingrouppage', (req, res) ->
-	res.render 'gamblingjoingroup',
+	res.render 'joingroup',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.get '/homeinstructions', (req, res) ->
 	res.render 'homeinstructions',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 #POST REQUESTS
 router.post '/creategrouppage', (req, res) ->
-	res.render 'gamblingcreategroup',
+	res.render 'creategroup',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.post '/joingrouppage', (req, res) ->
-	res.render 'gamblingjoingroup',
+	res.render 'joingroup',
 		givenTitle: 'Bet Log'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.post '/creategroup', (req, res) ->
@@ -119,10 +112,8 @@ router.post '/joingroup', (req, res) ->
 
 router.post '/createeventpage', (req, res) ->
 	groupName = req.body.groupName
-	res.render 'gamblingcreateevent',
+	res.render 'createevent',
 		givenTitle: 'Create Event'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinggroup.js'
 		groupName: groupName
 	return
 router.post '/createevent', (req, res) ->
@@ -145,14 +136,12 @@ router.post '/createbetpage', (req, res) ->
 	eventId = req.body.eventId
 	groupName = req.body.groupName
 	optionName = req.body.optionName
-	res.render 'gamblingcreatebet',
+	res.render 'createbet',
 		givenTitle: 'Place Bet'
 		groupName: groupName
 		optionId: optionId
 		optionName: optionName
 		eventId: eventId
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinghome.js'
 	return
 
 router.post '/createbet', (req, res) ->
@@ -200,10 +189,8 @@ router.post '/selectwinpage', (req, res) ->
 	opt2id = req.body.opt2id
 	opt1name = req.body.opt1name
 	opt2name = req.body.opt2name
-	res.render 'gamblingselectwinpage',
+	res.render 'selectwinpage',
 		givenTitle: eventName
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinggroup.js'
 		groupName: groupName
 		eventCreator: eventCreator
 		eventName: eventName
@@ -228,10 +215,8 @@ router.post '/eventPass', (req, res) ->
 		if err
 			throw err
 		if bool
-			res.render 'gamblingselectwinner',
+			res.render 'selectwinner',
 				givenTitle: eventName
-				givenStyle: '../stylesheets/gamblinghome.css'
-				givenScript: '../javascripts/gamblinggroup.js'
 				groupName: groupName
 				eventCreator: eventCreator
 				eventName: eventName
@@ -241,10 +226,8 @@ router.post '/eventPass', (req, res) ->
 				opt1name: opt1name
 				opt2name: opt2name
 		else
-			res.render 'gamblingselectwinpage',
+			res.render 'selectwinpage',
 				givenTitle: eventName
-				givenStyle: '../stylesheets/gamblinghome.css'
-				givenScript: '../javascripts/gamblinggroup.js'
 				groupName: groupName
 				eventCreator: eventCreator
 				eventName: eventName
@@ -279,10 +262,8 @@ router.post '/createbetmatchpage', (req, res) ->
 	betterAmount = req.body.amount
 	betterAddress = req.body.address
 	groupName = req.body.groupName
-	res.render 'gamblingmatchbet',
+	res.render 'matchbet',
 		givenTitle: 'Match Bet'
-		givenStyle: '../stylesheets/gamblinghome.css'
-		givenScript: '../javascripts/gamblinggroup.js'
 		groupName: groupName
 		eventId: eventId
 		matchName: betterName
