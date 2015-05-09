@@ -277,7 +277,7 @@ router.post '/createbetmatchpage', (req, res) ->
 		matchId: betId
 	return
 
-router.post '/createbetmatch', (req, res) ->
+router.post '/createbetmatch', (req, res) -> 
 	eventId = req.body.eventId
 	optionId = req.body.optionId
 	matchId = req.body.matchId
